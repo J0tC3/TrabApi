@@ -17,6 +17,8 @@ class Core{
 		//configurando rota de página não encontrada
 		$router->addRoute('/404', array(new notfoundController(), 'index'));
 
+		$router->addRoute('/login', array(new AuthController(), 'login'));
+
 		//lidando com a requisição
 		$route = isset($_GET['route'])?'/'.$_GET['route']:'/';
 
