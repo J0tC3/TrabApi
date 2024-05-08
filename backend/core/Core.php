@@ -6,8 +6,14 @@ class Core{
 		$router = new Router();
 
 		//configurar as rotas
-		$router->addRoute('/', array(new homeController(), 'index'));
-		
+		$router->addRoute('/', array(new artigosController(), 'index'));
+		$router->addRoute('/', array(new artigosController(), 'listarTitulo'));
+		$router->addRoute('/', array(new artigosController(), 'listarAutor'));
+		$router->addRoute('/', array(new artigosController(), 'excluirArtigo'));
+		$router->addRoute('/', array(new usuarioController(), 'createUsuario'));		
+		$router->addRoute('/', array(new usuarioController(), 'alterUsuario'));
+		$router->addRoute('/', array(new usuarioController(), 'dropUsuario'));
+
 		//configurando rota de página não encontrada
 		$router->addRoute('/404', array(new notfoundController(), 'index'));
 
