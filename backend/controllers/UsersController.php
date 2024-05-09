@@ -8,12 +8,9 @@ class UsersController extends controller{
 		$this->dados = array();
 	}
 
-
 	public function userExists($username, $password) {
 		$user = new Users();
 		$lista = $user->getAll();
-
-		print_r($lista);
 
 		foreach ($lista as $usuario) {
 			if($username == $usuario['username'] 
@@ -23,6 +20,18 @@ class UsersController extends controller{
 		}
 		
 		return false;
+	}
+
+	//exemplo de como usar o token para verificacao
+	public function getAll() {
+		if(AuthController::checkAuth()) {
+			//faz algo
+			echo 'deu certo';
+			return;
+		}
+
+		//ta bugando essa porra, mas a intencao era avisar q n verificou
+		output_header(false,'Token nao valido',array('consulte o manual da api','manual disponivel em nosso site'));
 	}
 
 }
