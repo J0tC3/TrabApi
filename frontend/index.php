@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!doctype html>
 <html lang="en">
   	<head>
@@ -9,11 +5,10 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
 
     	<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         
   	</head>
   	<body>
-		<!--
     	<div class="container">
     		<div class="row">
     			<div class="col-md-4">&nbsp;</div>
@@ -24,14 +19,14 @@
 		    				<form method="post" id="form">
 		    					<div class="mb-3">
 			    					<label>Username</label>
-			    					<input type="username" name="username" class="form-control" />
+			    					<input type="username" id="username" name="username" class="form-control" />
 			    				</div>
 			    				<div class="mb-3">
 			    					<label>Password</label>
-			    					<input type="password" name="password" class="form-control" />
+			    					<input type="password" id="password" name="password" class="form-control" />
 			    				</div>
 			    				<div class="text-center">
-			    					<input type="submit" name="login" class="btn btn-primary" value="Login" />
+			    					<input type="button" id="btnSubmit" name="login" class="btn btn-primary" value="Login" />
 			    				</div>
 		    				</form>
 		    			</div>
@@ -39,15 +34,19 @@
 		    	</div>
 	    	</div>
     	</div>
-		-->
 
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 		<script src="jquery-3.5.1.min.js"></script>
 		<script>
-			var username = 'breno';
-			var password = '2902';
+			const btnSubmit = document.getElementById('btnSubmit');
+
+			btnSubmit.addEventListener('click', loginApi);
 			
-			//envia credenciais e recebe um token caso eles existam no banco
+			//envia as credenciais e recebe um token caso elas existam no banco
 			function loginApi() {
+				const username = $("#username").val();
+				const password = $("#password").val();
+
 				$.ajax({
 					url: "http://localhost/TrabApi/backend/login",
 					method: 'POST',
@@ -57,7 +56,6 @@
 						localStorage.setItem('user_token_jwt', data);
 				});
 			}
-
 
 			//exemplo de como o token pode ser usado pra verificar se o usuario que esta acessando 
 			//tais endpoints tem acesso
