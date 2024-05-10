@@ -1,7 +1,7 @@
 <?php
 class Artigos extends model{
 
-//Listar todos os artigos
+    //Listar todos os artigos
 	public function getAll(){
 		$array = array();
 
@@ -17,7 +17,7 @@ class Artigos extends model{
 		return $array;
 	}
 
-//Listar Pelo Titulo dos artigos
+    //Listar Pelo Titulo dos artigos
     public function getTitulo($titulo) {
         $array = array();
         
@@ -37,18 +37,18 @@ class Artigos extends model{
         return $array;
     }
 
-//Listar Por Autores dos artigos
+    //Listar Por Autores dos artigos
     public function getAutor($autor) {
         $array = array();
     
         $sql = "SELECT *
          FROM tab_artigos WHERE autor = :autor";
        
-       $sql = $this->db->prepare($sql);
-       
-       $sql->bindValue(':autor', $autor);
-       
-       $sql->execute();
+        $sql = $this->db->prepare($sql);
+        
+        $sql->bindValue(':autor', $autor);
+        
+        $sql->execute();
     
         if($sql->rowCount() > 0) {
             $array = $sql->fetchAll(\PDO::FETCH_ASSOC);
@@ -57,7 +57,7 @@ class Artigos extends model{
         return $array;
     }
 
-//Excluir Artigo
+    //Excluir Artigo
     public function dropArtigo($artigo){
 
         $sql = "DELETE FROM tab_artigos
@@ -66,10 +66,9 @@ class Artigos extends model{
         $stmt = $this->db->prepare($sql);
         
         $stmt->execute([$artigo]);
-
     }
 
-//Excluir Todos o Artigos do Autor
+    //Excluir Todos o Artigos do Autor
     public function dropTodosArtigos($autor){
 
         $sql = "DELETE FROM tab_artigos
@@ -78,7 +77,6 @@ class Artigos extends model{
         $stmt = $this->db->prepare($sql);
         
         $stmt->execute([$autor]);
-
     }
 
 }

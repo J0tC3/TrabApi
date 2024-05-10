@@ -34,4 +34,31 @@ class UsersController extends controller{
 		output_header(false,'Token nao valido',array('consulte o manual da api','manual disponivel em nosso site'));
 	}
 
+	public function createUsuario($nome, $sexo, $bibliografia, $email) {
+        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
+        if(!AuthController::checkAuth()) return;
+
+        $create = new Users();
+        $create->createUsuario($nome, $sexo, $bibliografia, $email);
+    }
+
+    public function alterUsuario($id,$nome, $sexo, $bibliografia, $email) {
+        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
+        if(!AuthController::checkAuth()) return;
+        
+        $alter = new Users();
+        $alter->alterUsuario($id,$nome, $sexo, $bibliografia, $email);
+    }
+
+    public function dropusuario($id) {
+        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
+        if(!AuthController::checkAuth()) return;
+
+        $delete = new Users();
+        $dropartigos = new Artigos;
+
+        $dropartigos->dropTodosArtigos($id);
+        $delete->dropUsuario($id);
+    }
+
 }
