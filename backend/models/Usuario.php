@@ -1,5 +1,5 @@
 <?php
-class Artigos extends model{
+class Usuario extends model{
 
 //Criar novo Usuário
     public function createUsuario($nome, $sexo, $bibliografia, $email) {
