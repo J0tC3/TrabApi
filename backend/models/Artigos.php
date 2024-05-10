@@ -1,12 +1,27 @@
 <?php
 class Artigos extends model{
 
+    //Criar Artigo
+    public function createArtigo($titulo, $descricao, $link, $autor){
+        $sql = "INSERT INTO tab_artigos 
+        (titulo, descricao, link, autor)
+            VALUES (:titulo, :descricao, :link, :autor)";
+    $stmt = $this->db->prepare($sql);
+
+    $stmt->bindValue(':titulo', $titulo);
+    $stmt->bindValue(':descricao', $descricao);
+    $stmt->bindValue(':link', $link);
+    $stmt->bindValue(':autor', $autor);
+
+    $stmt->execute();
+    }
+
     //Listar todos os artigos
 	public function getAll(){
 		$array = array();
 
 		$sql = "SELECT *
-		          FROM tab_artigos";
+		          FROM tab_artigo";
 
 		$sql = $this->db->query($sql);
 

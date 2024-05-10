@@ -8,14 +8,18 @@ class artigosController extends controller{
 		$this->dados = array();
 	}
 
-	public function index() {
+	public function listarTudo() {
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
+        //if(!AuthController::checkAuth()) return;
 
 		$artigo = new Artigos();
-		$lista = $artigo->getAll();
+		$lista = $artigo->getAll();  
 
-		output_header(true,'Todos os artigos',$lista);
+        // Convert the $lista array to JSON format
+        $json_lista = json_encode($lista);
+
+        // Output the JSON data
+        echo $json_lista;
 	}
 
     // Listar artigos por titulo
@@ -25,7 +29,12 @@ class artigosController extends controller{
         
         $artigo = new Artigos();
         $lista = $artigo->getTitulo($titulo);
-        output_header(true, 'Artigos com titulo ' . $titulo, $lista);
+
+        // Convert the $lista array to JSON format
+        $json_lista = json_encode($lista);
+
+        // Output the JSON data
+        echo $json_lista;
     }
     
     // Listar artigos por autor
@@ -35,7 +44,24 @@ class artigosController extends controller{
 
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
-        output_header(true, 'Artigos do autor ' . $autor, $lista);
+
+        // Convert the $lista array to JSON format
+        $json_lista = json_encode($lista);
+
+        // Output the JSON data
+        echo $json_lista;
+    }
+
+    //Criar Artigo
+    public function criarArtigo($titulo, $descricao, $link, $id_autor){
+        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
+        if(!AuthController::checkAuth()) return;  
+
+        $artigo = new Artigos();
+        
+        $artigo->createArtigo($titulo, $descricao, $link, $id_autor);
+        output_header(true, 'Artigo Criado');
+
     }
 
     //Excluir artigo
@@ -43,7 +69,6 @@ class artigosController extends controller{
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
 
-        $api = new Api();
         $artigo = new Artigos();
         $artigo->dropArtigo($id);
         output_header(true, 'Artigo excluido');
@@ -54,7 +79,6 @@ class artigosController extends controller{
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
 
-        $api = new Api();
         $artigo = new Artigos();
         $artigo->dropTodosArtigos($autor);
     }

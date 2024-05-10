@@ -14,7 +14,7 @@ class UsersController extends controller{
 
 		foreach ($lista as $usuario) {
 			if($username == $usuario['username'] 
-			&& $password == $usuario['password'] ) {
+			&& $password == $usuario['passcode'] ) {
 				return true;
 			}
 		}
@@ -34,20 +34,20 @@ class UsersController extends controller{
 		output_header(false,'Token nao valido',array('consulte o manual da api','manual disponivel em nosso site'));
 	}
 
-	public function createUsuario($nome, $sexo, $bibliografia, $email) {
+	public function createUsuario($username, $passcode, $email) {
         //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
 
         $create = new Users();
-        $create->createUsuario($nome, $sexo, $bibliografia, $email);
+        $create->createUsuario($username, $passcode, $email);
     }
 
-    public function alterUsuario($id,$nome, $sexo, $bibliografia, $email) {
+    public function alterUsuario($id,$username, $passcode, $email) {
         //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
         
         $alter = new Users();
-        $alter->alterUsuario($id,$nome, $sexo, $bibliografia, $email);
+        $alter->alterUsuario($id,$username, $passcode, $email);
     }
 
     public function dropusuario($id) {

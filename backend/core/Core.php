@@ -9,8 +9,9 @@ class Core{
 		$router->addRoute('/404', array(new notfoundController(), 'index'));
 
 		//configurar as rotas
-		$router->addRoute('/index', array(new artigosController(), 'index'));
+		$router->addRoute('/listarTudo', array(new artigosController(), 'listarTudo'));
 		$router->addRoute('/listarTitulo', array(new artigosController(), 'listarTitulo'));
+		$router->addRoute('/criarArtigo', array(new artigosController(), 'criarArtigo'));
 		$router->addRoute('/listarAutor', array(new artigosController(), 'listarAutor'));
 		$router->addRoute('/excluirArtigo', array(new artigosController(), 'excluirArtigo'));
 		$router->addRoute('/createUsuario', array(new UsersController(), 'createUsuario'));		
