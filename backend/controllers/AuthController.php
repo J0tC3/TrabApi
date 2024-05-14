@@ -7,9 +7,9 @@ class AuthController extends controller{
         $users = new UsersController();
 
         $username = $_POST['username'];
-        $password = $_POST['password'];
+        $passcode = $_POST['passcode'];
 
-        if($users->userExists($username, $password)) {
+        if($users->userExists($username, $passcode)) {
             //Header Token
             $header = [
                 'typ' => 'JWT',

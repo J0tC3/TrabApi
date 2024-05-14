@@ -3,17 +3,17 @@ class Artigos extends model{
 
     //Criar Artigo
     public function createArtigo($titulo, $descricao, $link, $autor){
-        $sql = "INSERT INTO tab_artigos 
+        $sql = "INSERT INTO tab_artigo 
         (titulo, descricao, link, autor)
             VALUES (:titulo, :descricao, :link, :autor)";
-    $stmt = $this->db->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
-    $stmt->bindValue(':titulo', $titulo);
-    $stmt->bindValue(':descricao', $descricao);
-    $stmt->bindValue(':link', $link);
-    $stmt->bindValue(':autor', $autor);
+            $stmt->bindValue(':titulo', $titulo);
+            $stmt->bindValue(':descricao', $descricao);
+            $stmt->bindValue(':link', $link);
+            $stmt->bindValue(':autor', $autor);
 
-    $stmt->execute();
+            $stmt->execute();
     }
 
     //Listar todos os artigos
@@ -36,8 +36,11 @@ class Artigos extends model{
     public function getTitulo($titulo) {
         $array = array();
         
+        $titulo = '%'.$titulo.'%';
+        
         $sql = "SELECT *
-         FROM tab_artigos WHERE titulo = :titulo";
+                FROM tab_artigo
+                WHERE titulo LIKE :titulo";
         
         $sql = $this->db->prepare($sql);
         
@@ -56,8 +59,11 @@ class Artigos extends model{
     public function getAutor($autor) {
         $array = array();
     
+        $autor = '%'.$autor.'%';
+        
         $sql = "SELECT *
-         FROM tab_artigos WHERE autor = :autor";
+                FROM tab_artigo
+                WHERE autor LIKE :autor";
        
         $sql = $this->db->prepare($sql);
         
@@ -75,7 +81,7 @@ class Artigos extends model{
     //Excluir Artigo
     public function dropArtigo($artigo){
 
-        $sql = "DELETE FROM tab_artigos
+        $sql = "DELETE FROM tab_artigo
             WHERE id = ?";
         
         $stmt = $this->db->prepare($sql);
@@ -86,7 +92,7 @@ class Artigos extends model{
     //Excluir Todos o Artigos do Autor
     public function dropTodosArtigos($autor){
 
-        $sql = "DELETE FROM tab_artigos
+        $sql = "DELETE FROM tab_artigo
             WHERE autor = ?";
         
         $stmt = $this->db->prepare($sql);

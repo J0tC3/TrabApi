@@ -23,7 +23,7 @@
 			    				</div>
 			    				<div class="mb-3">
 			    					<label>Password</label>
-			    					<input type="password" id="password" name="password" class="form-control" />
+			    					<input type="passcode" id="passcode" name="passcode" class="form-control" />
 			    				</div>
 			    				<div class="text-center">
 			    					<input type="button" id="btnSubmit" name="login" class="btn btn-primary" value="Login" />
@@ -45,12 +45,12 @@
 			//envia as credenciais e recebe um token caso elas existam no banco
 			function loginApi() {
 				const username = $("#username").val();
-				const password = $("#password").val();
+				const passcode = $("#passcode").val();
 
 				$.ajax({
 					url: "http://localhost/TrabApi/backend/login",
 					method: 'POST',
-					data: {'username' : username, 'password': password},
+					data: {'username' : username, 'passcode': passcode},
 					})
 					.done(function( data ) {
 						localStorage.setItem('user_token_jwt', data);

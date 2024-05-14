@@ -24,9 +24,10 @@ class artigosController extends controller{
 
     // Listar artigos por titulo
     public function listarTitulo($titulo) {
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
         
+        $titulo = $_POST['titulo'];
+
         $artigo = new Artigos();
         $lista = $artigo->getTitulo($titulo);
 
@@ -38,9 +39,10 @@ class artigosController extends controller{
     }
     
     // Listar artigos por autor
-    public function listarAutor($autor) {
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
+    public function listarAutor() {
+        if(!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
+
+        $autor = $_POST['autor'];
 
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
@@ -75,6 +77,7 @@ class artigosController extends controller{
     }
 
     //Excluir artigo
+    /*
     public function excluirtodosArtigo($autor) {
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
@@ -82,5 +85,6 @@ class artigosController extends controller{
         $artigo = new Artigos();
         $artigo->dropTodosArtigos($autor);
     }
+    */
 
 }

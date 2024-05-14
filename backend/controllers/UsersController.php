@@ -8,13 +8,13 @@ class UsersController extends controller{
 		$this->dados = array();
 	}
 
-	public function userExists($username, $password) {
+	public function userExists($username, $passcode) {
 		$user = new Users();
 		$lista = $user->getAll();
 
 		foreach ($lista as $usuario) {
 			if($username == $usuario['username'] 
-			&& $password == $usuario['passcode'] ) {
+			&& $passcode == $usuario['passcode'] ) {
 				return true;
 			}
 		}
@@ -34,25 +34,41 @@ class UsersController extends controller{
 		output_header(false,'Token nao valido',array('consulte o manual da api','manual disponivel em nosso site'));
 	}
 
-	public function createUsuario($username, $passcode, $email) {
-        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
+	public function createUsuario() {
+		if(!(isset($_POST['username']) && !empty($_POST['username']))
+		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
+		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
+
+		$username = $_POST['username'];
+		$passcode = $_POST['passcode'];
+		$email = $_POST['email'];
+
+		$users = new UsersController();
+
+		if($users->userExists($username, $passcode)) {
+			output_header(false, 'Usuario ja existe');
+		}
 
         $create = new Users();
         $create->createUsuario($username, $passcode, $email);
+
+		output_header(true, 'Usuario criado');
     }
 
     public function alterUsuario($id,$username, $passcode, $email) {
-        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
-        
+		if(!(isset($_POST['id']) && !empty($_POST['id']))
+		|| !(isset($_POST['username']) && !empty($_POST['username']))
+		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
+		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
+
         $alter = new Users();
         $alter->alterUsuario($id,$username, $passcode, $email);
     }
 
-    public function dropusuario($id) {
-        //se for verdadeiro continue a execucao, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
+    public function dropusuario() {
+        if(!(isset($_POST['$id']) && !empty($_POST['$id']))) return;
+
+		$id = $_POST['$id'];
 
         $delete = new Users();
         $dropartigos = new Artigos;
