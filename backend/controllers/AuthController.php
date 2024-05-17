@@ -19,6 +19,7 @@ class AuthController extends controller{
             //Payload - Content
             $payload = [
                 'nome' => $username,
+
             ];
 
             //JSON
@@ -62,7 +63,14 @@ class AuthController extends controller{
             $valid = base64_encode($valid);
 
             if($sign === $valid) {
-                return true;
+                // Decodificando o payload
+                $decoded_payload = base64_decode($payload);
+                $decoded_payload_array = json_decode($decoded_payload, true);
+
+                // Retornando os dados do usuário autenticado
+                print_r ($decoded_payload_array);
+
+                return $decoded_payload_array;
             }
         }
 

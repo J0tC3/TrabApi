@@ -55,11 +55,15 @@ class UsersController extends controller{
 		output_header(true, 'Usuario criado');
     }
 
-    public function alterUsuario($id,$username, $passcode, $email) {
+    public function alterUsuario() {
 		if(!(isset($_POST['id']) && !empty($_POST['id']))
 		|| !(isset($_POST['username']) && !empty($_POST['username']))
 		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
 		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
+
+		$username = $_POST['username'];
+		$passcode = $_POST['passcode'];
+		$email = $_POST['email'];
 
         $alter = new Users();
         $alter->alterUsuario($id,$username, $passcode, $email);

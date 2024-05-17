@@ -15,15 +15,15 @@ class artigosController extends controller{
 		$artigo = new Artigos();
 		$lista = $artigo->getAll();  
 
-        // Convert the $lista array to JSON format
+        //  // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
 
-        // Output the JSON data
+        // Saida do JSON data
         echo $json_lista;
 	}
 
     // Listar artigos por titulo
-    public function listarTitulo($titulo) {
+    public function listarTitulo() {
         if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
         
         $titulo = $_POST['titulo'];
@@ -31,10 +31,10 @@ class artigosController extends controller{
         $artigo = new Artigos();
         $lista = $artigo->getTitulo($titulo);
 
-        // Convert the $lista array to JSON format
+        // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
 
-        // Output the JSON data
+        // Saida do JSON data
         echo $json_lista;
     }
     
@@ -47,44 +47,51 @@ class artigosController extends controller{
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
 
-        // Convert the $lista array to JSON format
+        // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
 
-        // Output the JSON data
+        // Saida do JSON data
         echo $json_lista;
     }
 
     //Criar Artigo
-    public function criarArtigo($titulo, $descricao, $link, $id_autor){
+    public function criarArtigo(){
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;  
+        if(AuthController::checkAuth() == false) return;  
+
+        $autor = AuthController::checkAuth();
+
+        $autor = $autor['nome'];
+
+
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
+        if(!(isset($_POST['descricao']) && !empty($_POST['descricao']))) return;
+        if(!(isset($_POST['link']) && !empty($_POST['link']))) return;
+
+        $titulo = $_POST['titulo'];
+        $descricao = $_POST['descricao'];
+        $link = $_POST['link'];
 
         $artigo = new Artigos();
         
-        $artigo->createArtigo($titulo, $descricao, $link, $id_autor);
+        $artigo->createArtigo($titulo, $descricao, $link, $autor);
         output_header(true, 'Artigo Criado');
 
     }
 
     //Excluir artigo
-    public function excluirArtigo($id) {
+    public function excluirArtigo() {
         //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
         if(!AuthController::checkAuth()) return;
+
+        if(!(isset($_POST['id']) && !empty($_POST['id']))) return;
+
+        $id = $_POST['id'];
 
         $artigo = new Artigos();
         $artigo->dropArtigo($id);
+
         output_header(true, 'Artigo excluido');
     }
-
-    //Excluir artigo
-    /*
-    public function excluirtodosArtigo($autor) {
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
-
-        $artigo = new Artigos();
-        $artigo->dropTodosArtigos($autor);
-    }
-    */
 
 }
