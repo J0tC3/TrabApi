@@ -37,7 +37,11 @@
                 // Obtém os valores dos campos do formulário
                 const titulo = document.getElementById('titulo').value;
                 const descricao = document.getElementById('descricao').value;
-                const link = document.getElementById('link').value;
+                let link = document.getElementById('link').value;
+
+                if (link.indexOf("https://") !== 0) {
+                   link = 'https://' + link;    
+                }
 
 				$.ajax({
 					url: 'http://localhost/TrabApi/backend/criarArtigo',
