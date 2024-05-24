@@ -13,9 +13,8 @@
     <body>
     <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Parte Esquerda -->
         <div>
-            <a class="navbar-brand">BuscArtigo</a>
+            <a class="navbar-brand">Buscar Artigos</a>
         </div>
         <!-- Parte Central -->
         <div class="text-center">
@@ -24,10 +23,9 @@
                 <button class="btn btn-outline-success" type="submit">Pesquisar</button>
             </form>
         </div>
-        <!-- Parte Direita -->
         <div>
             <button class="btn btn-outline-light me-2">Cadastrar</button>
-            <button class="btn btn-outline-light">Login</button>
+            <button class="btn btn-outline-light" action = "./login.php">Login</button>
         </div>
     </div>
 </nav>
@@ -42,65 +40,67 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $.ajax({
-                    url: 'http://localhost/TrabApi/backend/listarTudo',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        const containerArtigos = $('#container-artigos');
-                        response.forEach(artigo => {
-                            const elementoArtigo = `
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <h2 class="card-title">${artigo.titulo}</h2>
-                                        <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
-                                        <p class="card-text">${artigo.descricao}</p>
-                                        <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
-                                    </div>
-                                </div>
-                            `;
-                            containerArtigos.append(elementoArtigo);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Erro ao buscar artigos:', error);
-                    }
-                });
+           $(document).ready(function() {
+    $.ajax({
+        url: 'http://localhost/TrabApi/backend/listarTudo',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            const containerArtigos = $('#container-artigos');
+            response.forEach(artigo => {
+                const elementoArtigo = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 class="card-title">Titulo: ${artigo.titulo}</h2>
+                            <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Email: ${artigo.email}</h6>
+                            <p class="card-text">Descrição: ${artigo.descricao}</p>
+                            <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
+                        </div>
+                    </div>
+                `;
+                containerArtigos.append(elementoArtigo);
             });
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao buscar artigos:', error);
+        }
+    });
+});
 
-            $('#form-pesquisa').submit(function(event) {
-                event.preventDefault();
+$('#form-pesquisa').submit(function(event) {
+    event.preventDefault();
 
-                const titulo = $('#titulo').val();
+    const titulo = $('#titulo').val();
 
-                $.ajax({
-                    url: 'http://localhost/TrabApi/backend/listarTitulo',
-                    method: 'POST',
-                    data: {'titulo': titulo},
-                    dataType: 'json',
-                    success: function(response) {
-                        const containerArtigos = $('#container-artigos');
-                        containerArtigos.empty(); // Limpa os artigos anteriores
-                        response.forEach(artigo => {
-                            const elementoArtigo = `
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <h2 class="card-title">${artigo.titulo}</h2>
-                                        <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
-                                        <p class="card-text">${artigo.descricao}</p>
-                                        <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
-                                    </div>
-                                </div>
-                            `;
-                            containerArtigos.append(elementoArtigo);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Erro ao buscar artigos:', error);
-                    }
-                });
+    $.ajax({
+        url: 'http://localhost/TrabApi/backend/listarTitulo',
+        method: 'POST',
+        data: {'titulo': titulo},
+        dataType: 'json',
+        success: function(response) {
+            const containerArtigos = $('#container-artigos');
+            containerArtigos.empty(); // Limpa os artigos anteriores
+            response.forEach(artigo => {
+                const elementoArtigo = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 class="card-title">Titulo: ${artigo.titulo}</h2>
+                            <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Email: ${artigo.email}</h6>
+                            <p class="card-text">Descrição: ${artigo.descricao}</p>
+                            <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
+                        </div>
+                    </div>
+                `;
+                containerArtigos.append(elementoArtigo);
             });
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao buscar artigos:', error);
+        }
+    });
+});
         </script>
     </body>
 </html>

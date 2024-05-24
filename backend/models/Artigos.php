@@ -3,17 +3,26 @@ class Artigos extends model{
 
     //Criar Artigo
     public function createArtigo($titulo, $descricao, $link, $autor){
+        // Recupera o email do autor a partir do banco de dados
+        $sqlEmail = "SELECT email FROM tab_user WHERE username = :username";
+        $stmtEmail = $this->db->prepare($sqlEmail);
+        $stmtEmail->bindValue(':username', $autor);
+        $stmtEmail->execute();
+        $email = $stmtEmail->fetchColumn();
+
+        // Insere o artigo no banco de dados
         $sql = "INSERT INTO tab_artigo 
-        (titulo, descricao, link, autor)
-            VALUES (:titulo, :descricao, :link, :autor)";
-            $stmt = $this->db->prepare($sql);
+        (titulo, descricao, link, autor, email)
+            VALUES (:titulo, :descricao, :link, :autor, :email)";
+        $stmt = $this->db->prepare($sql);
 
-            $stmt->bindValue(':titulo', $titulo);
-            $stmt->bindValue(':descricao', $descricao);
-            $stmt->bindValue(':link', $link);
-            $stmt->bindValue(':autor', $autor);
+        $stmt->bindValue(':titulo', $titulo);
+        $stmt->bindValue(':descricao', $descricao);
+        $stmt->bindValue(':link', $link);
+        $stmt->bindValue(':autor', $autor);
+        $stmt->bindValue(':email', $email);
 
-            $stmt->execute();
+        $stmt->execute();
     }
 
     //Listar todos os artigos

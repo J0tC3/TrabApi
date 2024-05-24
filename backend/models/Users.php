@@ -32,7 +32,7 @@ class Users extends model{
 
     //Editar Informação do Usuário    
     public function alterUsuario($id, $username, $passcode, $email) {
-        $sql = "UPDATE tab_usuarios 
+        $sql = "UPDATE tab_user
                 SET username = :username, passcode = :passcode, email = :email 
                 WHERE id = :id";
         $stmt = $this->db->prepare($sql);
@@ -47,7 +47,7 @@ class Users extends model{
 
     //Deletar Usuário    
     public function dropUsuario($id){
-        $sql = "DELETE FROM tab_usuarios WHERE id = :id";
+        $sql = "DELETE FROM tab_user WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
