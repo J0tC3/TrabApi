@@ -8,13 +8,12 @@ class UsersController extends controller{
 		$this->dados = array();
 	}
 
-	public function userExists($username, $passcode) {
+	public function userExists($username) {
 		$user = new Users();
 		$lista = $user->getAll();
 
 		foreach ($lista as $usuario) {
-			if($username == $usuario['username'] 
-			&& $passcode == $usuario['passcode'] ) {
+			if($username == $usuario['username'] ) {
 				return true;
 			}
 		}
@@ -37,23 +36,32 @@ class UsersController extends controller{
 	public function createUsuario() {
 		if(!(isset($_POST['username']) && !empty($_POST['username']))
 		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
-		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
-
+		|| !(isset($_POST['email']) && !empty($_POST['email']))){ return;
+	}
 		$username = $_POST['username'];
 		$passcode = $_POST['passcode'];
 		$email = $_POST['email'];
 
 		$users = new UsersController();
 
-		if($users->userExists($username, $passcode)) {
-			output_header(false, 'Usuario ja existe');
+		if($users->userExists($username)) {
+			$response = ['msg' => "Usuário já existe"];
+			
+			// Converte o array $response para JSON 
+			echo json_encode($response);
+			return;
 		}
-
-        $create = new Users();
-        $create->createUsuario($username, $passcode, $email);
-
-		output_header(true, 'Usuario criado');
-    }
+		
+		// Cria um novo usuário
+		$create = new Users();
+		$create->criarUsuario($username, $passcode, $email);
+		
+		// Prepara a resposta para o usuário criado
+		$response = ['msg' => "Usuário Criado"];
+		
+		// Converte o array $response para JSON 
+		echo json_encode($response);
+	}
 
     public function alterUsuario() {
 		if(!(isset($_POST['id']) && !empty($_POST['id']))

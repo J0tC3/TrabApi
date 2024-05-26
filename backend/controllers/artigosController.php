@@ -37,6 +37,23 @@ class artigosController extends controller{
         // Saida do JSON data
         echo $json_lista;
     }
+
+    public function listarArtigoAutor() {
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo'])) || !(isset($_POST['autor']) && !empty($_POST['autor']))) {
+            return;
+        }
+        $titulo = $_POST['titulo'];
+        $autor = $_POST['autor'];
+
+        $artigo = new Artigos();
+        $lista = $artigo->getTituloAutor($titulo,$autor);
+
+        // Converte o array $lista para JSON 
+        $json_lista = json_encode($lista);
+
+        // Saida do JSON data
+        echo $json_lista;
+    }
     
     // Listar artigos por autor
     public function listarAutor() {

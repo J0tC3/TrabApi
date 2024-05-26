@@ -17,7 +17,7 @@ class Users extends model{
 	}
 
     //Criar novo Usuário
-    public function createUsuario($username, $passcode, $email) {
+    public function criarUsuario($username, $passcode, $email) {
         $sql = "INSERT INTO tab_user
             (username, passcode, email)
                 VALUES (:username, :passcode, :email)";

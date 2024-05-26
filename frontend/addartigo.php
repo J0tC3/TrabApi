@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Artigo</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="styles/addartigo.css">
 </head>
 <body>
@@ -27,8 +28,6 @@
         </form>
         <div id="mensagem"></div>
     </div>
-    <script src="jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.getElementById('criarArtigoForm').addEventListener('submit', function(event) {
                 event.preventDefault();

@@ -13,6 +13,7 @@ class Core{
 		$router->addRoute('/listarTitulo', array(new artigosController(), 'listarTitulo'));
 		$router->addRoute('/criarArtigo', array(new artigosController(), 'criarArtigo'));
 		$router->addRoute('/listarAutor', array(new artigosController(), 'listarAutor'));
+		$router->addRoute('/listarArtigoAutor', array(new artigosController(), 'listarArtigoAutor'));
 		$router->addRoute('/excluirArtigo', array(new artigosController(), 'excluirArtigo'));
 		$router->addRoute('/createUsuario', array(new UsersController(), 'createUsuario'));		
 		$router->addRoute('/alterUsuario', array(new UsersController(), 'alterUsuario'));

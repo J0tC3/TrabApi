@@ -64,6 +64,30 @@ class Artigos extends model{
         return $array;
     }
 
+        //Listar Pelo Titulo e Autor dos artigos
+        public function getTituloAutor($titulo, $autor) {
+            $array = array();
+    
+            $autor = '%' . $autor . '%';
+            $titulo = '%' . $titulo . '%';
+            
+            $sql = "SELECT *
+                    FROM tab_artigo
+                    WHERE titulo LIKE :titulo AND autor LIKE :autor";
+            
+            $sql = $this->db->prepare($sql);
+            
+            $sql->bindValue(':titulo', $titulo);
+            $sql->bindValue(':autor', $autor);
+            $sql->execute();
+            
+            if($sql->rowCount() > 0) {
+                $array = $sql->fetchAll(\PDO::FETCH_ASSOC);
+            }   
+            
+            return $array;
+        }
+
     //Listar Por Autores dos artigos
     public function getAutor($autor) {
         $array = array();

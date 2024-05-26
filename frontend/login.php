@@ -27,6 +27,7 @@
 			    				</div>
 			    				<div class="text-center">
 			    					<input type="submit" id="btnSubmit" name="login" class="btn btn-primary" value="Login" />
+									<a href="index.php" class="btn btn-primary">Voltar</a>
 			    				</div>
 		    				</form>
 		    			</div>
