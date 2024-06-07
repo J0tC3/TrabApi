@@ -26,67 +26,95 @@ class Artigos extends model{
     }
 
     //Listar todos os artigos
-	public function getAll(){
-		$array = array();
-
-		$sql = "SELECT *
-		          FROM tab_artigo";
-
-		$sql = $this->db->query($sql);
-
-		if($sql->rowCount() > 0){
-			$array = $sql->fetchAll(\PDO::FETCH_ASSOC);
-		}	
-
-		return $array;
-	}
+    public function getAll($limit) {
+        $array = array();
+    
+        $sql = "SELECT *
+                  FROM tab_artigo";
+    
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+        }
+    
+        $stmt = $this->db->prepare($sql);
+    
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        }
+    
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+    
+        return $array;
+    }
 
     //Listar Pelo Titulo dos artigos
-    public function getTitulo($titulo) {
+    public function getTitulo($titulo, $limit) {
         $array = array();
         
+        // Adiciona os caracteres % diretamente na string do título
         $titulo = '%'.$titulo.'%';
         
         $sql = "SELECT *
                 FROM tab_artigo
                 WHERE titulo LIKE :titulo";
+    
+        // Concatena a cláusula LIMIT diretamente na consulta SQL
+        if ($limit !== null) {
+            $sql .= " LIMIT $limit";
+        }
         
-        $sql = $this->db->prepare($sql);
+        $stmt = $this->db->prepare($sql);
+    
+        $stmt->bindValue(':titulo', $titulo);
+    
+        $stmt->execute();
         
-        $sql->bindValue(':titulo', $titulo);
-        
-        $sql->execute();
-        
-        if($sql->rowCount() > 0) {
-            $array = $sql->fetchAll(\PDO::FETCH_ASSOC);
+        if($stmt->rowCount() > 0) {
+            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }   
         
         return $array;
     }
 
-        //Listar Pelo Titulo e Autor dos artigos
-        public function getTituloAutor($titulo, $autor) {
-            $array = array();
+    //Listar Pelo Titulo e Autor dos artigos
+    public function getTituloAutor($titulo, $autor, $limit, $offset) {
+        $array = array();
     
-            $autor = '%' . $autor . '%';
-            $titulo = '%' . $titulo . '%';
-            
-            $sql = "SELECT *
-                    FROM tab_artigo
-                    WHERE titulo LIKE :titulo AND autor LIKE :autor";
-            
-            $sql = $this->db->prepare($sql);
-            
-            $sql->bindValue(':titulo', $titulo);
-            $sql->bindValue(':autor', $autor);
-            $sql->execute();
-            
-            if($sql->rowCount() > 0) {
-                $array = $sql->fetchAll(\PDO::FETCH_ASSOC);
-            }   
-            
-            return $array;
+        $autor = '%' . $autor . '%';
+        $titulo = '%' . $titulo . '%';
+        
+        $sql = "SELECT *
+                FROM tab_artigo
+                WHERE titulo LIKE :titulo AND autor LIKE :autor";
+        
+        // Adiciona cláusula LIMIT e OFFSET se limit for fornecido
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit OFFSET :offset";
         }
+        
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindValue(':titulo', $titulo);
+        $stmt->bindValue(':autor', $autor);
+    
+        // Define os valores de limite e deslocamento se limit for fornecido
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        }
+        
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0) {
+            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }   
+        
+        return $array;
+    }
 
     //Listar Por Autores dos artigos
     public function getAutor($autor) {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/teste.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="./index.js" defer ></script>
+
+</head>
+<body>
+    
+    <header id="navBar">
+        <div class="inputsBox">
+            <input type="text" id="inputTitulo" placeholder="Digite o titulo aqui :)">
+            <input type="text" id="inputAutor" placeholder="Digite o nome do autor aqui :)">
+        </div>
+
+        <div class="btnsBox">
+            <button type="button" id="btnPesquisar">
+                <img src="./assets/lupa.svg" alt="pesquisarIcon">
+            </button>
+
+            <button type="button" id="btnLogin">
+                login
+            </button>
+        </div>
+    </header>
+
+    <main id="contentBody">
+        <section id="artigosBody">
+        </section>
+    </main>
+
+    <footer>
+        <!-- Botão de página anterior -->
+        <div class="pagination-button" id="prevPageButton">
+            &lt; <!-- Seta para a esquerda -->
+        </div>
+
+        <!-- Botão de próxima página -->
+        <div class="pagination-button" id="nextPageButton">
+            &gt; <!-- Seta para a direita -->
+        </div>
+    </footer>
+</body>
+</html>

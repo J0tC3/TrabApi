@@ -9,11 +9,14 @@ class artigosController extends controller{
 	}
 
 	public function listarTudo() {
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        //if(!AuthController::checkAuth()) return;
+        $limite = null;
+
+        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
+            $limite = $_GET['limite'];
+        }
 
 		$artigo = new Artigos();
-		$lista = $artigo->getAll();  
+		$lista = $artigo->getAll($limite);
 
         //  // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
@@ -24,12 +27,18 @@ class artigosController extends controller{
 
     // Listar artigos por titulo
     public function listarTitulo() {
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
+        if(!(isset($_GET['titulo']) && !empty($_GET['titulo']))) return;
         
-        $titulo = $_POST['titulo'];
+        $limite = null;
+
+        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
+            $limite = $_GET['limite'];
+        }
+
+        $titulo = $_GET['titulo'];
 
         $artigo = new Artigos();
-        $lista = $artigo->getTitulo($titulo);
+        $lista = $artigo->getTitulo($titulo, $limite);
 
         // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
@@ -39,19 +48,31 @@ class artigosController extends controller{
     }
 
     public function listarArtigoAutor() {
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo'])) || !(isset($_POST['autor']) && !empty($_POST['autor']))) {
-            return;
+        if(!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
+        && !(isset($_GET['autor']) && !empty($_GET['autor']))) return;
+    
+        // Define a página padrão como 1 se não especificada
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    
+        $limite = null;
+    
+        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
+            $limite = $_GET['limite'];
         }
-        $titulo = $_POST['titulo'];
-        $autor = $_POST['autor'];
-
+    
+        // Calcula o offset para a consulta com base na página atual
+        $offset = ($page - 1) * $limite;
+    
+        $titulo = $_GET['titulo'];
+        $autor = $_GET['autor'];
+    
         $artigo = new Artigos();
-        $lista = $artigo->getTituloAutor($titulo,$autor);
-
+        $lista = $artigo->getTituloAutor($titulo, $autor, $limite, $offset);
+    
         // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
-
-        // Saida do JSON data
+    
+        // Saída do JSON data
         echo $json_lista;
     }
     
