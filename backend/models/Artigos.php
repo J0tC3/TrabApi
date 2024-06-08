@@ -3,7 +3,7 @@ class Artigos extends model{
 
     //Criar Artigo
     public function createArtigo($titulo, $descricao, $link, $autor){
-        // Recupera o email do autor a partir do banco de dados
+
         $sqlEmail = "SELECT email FROM tab_user WHERE username = :username";
         $stmtEmail = $this->db->prepare($sqlEmail);
         $stmtEmail->bindValue(':username', $autor);

@@ -16,14 +16,14 @@
 		    		<div class="card">
 		    			<div class="card-header">Login</div>
 		    			<div class="card-body">
-		    				<form method="post" id="form" action = "./addartigo.php">
+		    				<form method="post" id="form" action = "./usuariologado.php">
 		    					<div class="mb-3">
 			    					<label>Username</label>
 			    					<input type="username" id="username" name="username" class="form-control" />
 			    				</div>
 			    				<div class="mb-3">
 			    					<label>Password</label>
-			    					<input type="passcode" id="passcode" name="passcode" class="form-control" />
+			    					<input type="password" id="passcode" name="passcode" class="form-control" />
 			    				</div>
 			    				<div class="text-center">
 			    					<input type="submit" id="btnSubmit" name="login" class="btn btn-primary" value="Login" />

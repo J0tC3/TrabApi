@@ -19,7 +19,6 @@ class AuthController extends controller{
             //Payload - Content
             $payload = [
                 'nome' => $username,
-
             ];
 
             //JSON

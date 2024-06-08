@@ -56,11 +56,21 @@ class artigosController extends controller{
     }
     
     // Listar artigos por autor
-    public function listarAutor() {
+    public function listarAutor() 
+    {
+    
+        if(AuthController::checkAuth() == true){
+
+        $autor = AuthController::checkAuth();
+
+        $autor = $autor['nome'];
+        }else{
         if(!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
+        
 
         $autor = $_POST['autor'];
-
+        }
+        
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
 

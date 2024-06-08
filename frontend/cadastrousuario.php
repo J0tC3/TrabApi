@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="senha">Senha:</label>
-                <input type="password" class="form-control" id="senha" name="senha" required>
+                <input type="passcode" class="form-control" id="senha" name="senha" required>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
