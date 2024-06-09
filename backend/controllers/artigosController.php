@@ -39,11 +39,17 @@ class artigosController extends controller{
     }
 
     public function listarArtigoAutor() {
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo'])) || !(isset($_POST['autor']) && !empty($_POST['autor']))) {
-            return;
+
+        if (AuthController::checkAuth() != false) {
+            $autor = AuthController::checkAuth();
+            $autor = $autor['nome'];
+        } else {
+            if (!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
+    
+            $autor = $_POST['autor'];
         }
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))){return;}
         $titulo = $_POST['titulo'];
-        $autor = $_POST['autor'];
 
         $artigo = new Artigos();
         $lista = $artigo->getTituloAutor($titulo,$autor);
@@ -57,29 +63,26 @@ class artigosController extends controller{
     
     // Listar artigos por autor
     public function listarAutor() 
-    {
+    { 
+        if (AuthController::checkAuth() != false) {
+            $autor = AuthController::checkAuth();
+            $autor = $autor['nome'];
+        } else {
+            if (!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
     
-        if(AuthController::checkAuth() == true){
-
-        $autor = AuthController::checkAuth();
-
-        $autor = $autor['nome'];
-        }else{
-        if(!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
-        
-
-        $autor = $_POST['autor'];
+            $autor = $_POST['autor'];
         }
-        
+    
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
-
+        
         // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
-
-        // Saida do JSON data
+        
+        // Saída do JSON data
         echo $json_lista;
     }
+    
 
     //Criar Artigo
     public function criarArtigo(){

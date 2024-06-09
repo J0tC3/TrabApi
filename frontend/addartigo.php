@@ -49,10 +49,8 @@
                     },
                         data: {'titulo' : titulo, 'descricao': descricao, 'link' : link}		
 				});
-                //Reseta os campos
                 document.getElementById('criarArtigoForm').reset();
-                    // Exibe a mensagem de sucesso
-                    document.getElementById('mensagem').innerText = 'Artigo criado com sucesso!';
+                document.getElementById('mensagem').innerText = 'Artigo criado com sucesso!';
             });
     </script>
 </body>

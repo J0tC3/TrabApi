@@ -20,13 +20,8 @@
             <div class="text-center">
                 <form class="d-flex align-items-center" role="search" id="form-pesquisa">
                     <input class="form-control me-2" type="search" placeholder="Pesquisar por Título" id="titulo" name="titulo">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar por Autor" id="autor" name="autor">
                     <button class="btn btn-outline-success me-2" type="submit">Pesquisar</button>
                 </form>
-            </div>
-            <div>
-                <a href=".php" class="btn btn-outline-light me-2">Meus Dados</a>
-                <a href="artigosuser.php" class="btn btn-outline-light">Meus Artigos</a>
             </div>
         </div>
     </nav>
@@ -37,28 +32,40 @@
         </div>
     </main>
 
-    <script>
-        $(document).ready(function() {
+    <script>        
+    $(document).ready(function() {
             $.ajax({
-                url: 'http://localhost/TrabApi/backend/listarTudo',
+                url: 'http://localhost/TrabApi/backend/listarAutor',
                 method: 'GET',
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('user_token_jwt')
+                    },
                 dataType: 'json',
                 success: function(response) {
                     const containerArtigos = $('#container-artigos');
-                    response.forEach(artigo => {
-                        const elementoArtigo = `
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h2 class="card-title">Título: ${artigo.titulo}</h2>
-                                    <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
-                                    <h6 class="card-subtitle mb-2 text-muted">Email: ${artigo.email}</h6>
-                                    <p class="card-text">Descrição: ${artigo.descricao}</p>
-                                    <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
+                    containerArtigos.empty();
+                    if (response.length === 0) {
+                        containerArtigos.append('<p>Nenhum artigo encontrado.</p>');
+                    } else {
+                        response.forEach(artigo => {
+                            const elementoArtigo = `
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Título: ${artigo.titulo}</h2>
+                                        <h6 class="card-subtitle mb-2 text-muted">por ${artigo.autor}</h6>
+                                        <p class="card-text">Descrição: ${artigo.descricao}</p>
+                                        <a href="${artigo.link}" class="btn btn-primary" target="_blank">Download</a>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                        containerArtigos.append(elementoArtigo);
-                    });
+                            `;
+                            containerArtigos.append(elementoArtigo);
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Erro ao buscar artigos:", textStatus, errorThrown); // Log de depuração
+                    console.error("Resposta do servidor:", jqXHR.responseText); // Log de depuração
+                    $('#container-artigos').append('<p>Erro ao buscar artigos.</p>');
                 }
             });
         });
@@ -66,28 +73,24 @@
         $('#form-pesquisa').submit(function(event) {
             event.preventDefault();
 
-            const titulo = $('#titulo').val();
-            const autor = $('#autor').val();
-            let url;
-            let data = {};
+                const titulo = $('#titulo').val();
+                let url;
+                let data = {};
 
-            if (titulo && autor) {
-                url = 'http://localhost/TrabApi/backend/listarArtigoAutor';
-                data = {'titulo': titulo, 'autor': autor};
-            } else if (titulo) {
-                url = 'http://localhost/TrabApi/backend/listarTitulo';
-                data = {'titulo': titulo};
-            } else if (autor) {
-                url = 'http://localhost/TrabApi/backend/listarAutor';
-                data = {'autor': autor};
-            } else {
-                alert("Informe ao menos um Titulo ou Autor para pesquisa");
-                return;
-            }
+                if (titulo) {
+                    url = 'http://localhost/TrabApi/backend/listarArtigoAutor';
+                    data = {'titulo': titulo};
+                } else {
+                    alert("Informe ao menos um Título para pesquisa");
+                    return;
+                }
 
             $.ajax({
                 url: url,
                 method: 'POST',
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('user_token_jwt')
+                    },
                 data: data,
                 dataType: 'json',
                 success: function(response) {
@@ -107,6 +110,11 @@
                         `;
                         containerArtigos.append(elementoArtigo);
                     });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Erro ao buscar artigos:", textStatus, errorThrown); // Log de depuração
+                    console.error("Resposta do servidor:", jqXHR.responseText); // Log de depuração
+                    $('#container-artigos').append('<p>Erro ao buscar artigos.</p>');
                 }
             });
         });
