@@ -66,9 +66,6 @@ class AuthController extends controller{
                 $decoded_payload = base64_decode($payload);
                 $decoded_payload_array = json_decode($decoded_payload, true);
 
-                // Retornando os dados do usuário autenticado
-                print_r ($decoded_payload_array);
-
                 return $decoded_payload_array;
             }
         }

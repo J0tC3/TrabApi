@@ -24,10 +24,18 @@
                 <label for="link">Link:</label>
                 <input type="text" class="form-control" id="link" name="link" required>
             </div>
-            <button type="submit" class="btn btn-primary">Criar Artigo</button>
+            <button type="submit" class="btn btn-success">Criar Artigo</button>
+            <button class="btn btn-danger" id="backBtn">Voltar</button>
         </form>
         <div id="mensagem"></div>
     </div>
+
+
+    <script>
+  document.getElementById("backBtn").addEventListener("click", function(){
+    history.back();
+  });
+</script>
     <script>
         document.getElementById('criarArtigoForm').addEventListener('submit', function(event) {
                 event.preventDefault();

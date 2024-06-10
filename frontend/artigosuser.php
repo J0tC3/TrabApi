@@ -11,26 +11,34 @@
     <title>Pagina IniCial</title>
 </head>
 <body>
-    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div>
-                <a class="navbar-brand text-white">Buscar Artigos</a>
+                <a class="navbar-brand text-white">Artigos do Usuário</a>
             </div>
-            <!-- Parte Central -->
-            <div class="text-center">
-                <form class="d-flex align-items-center" role="search" id="form-pesquisa">
+            <div class="text-center flex-grow-1">
+                <form class="d-flex align-items-center justify-content-center" role="search" id="form-pesquisa">
                     <input class="form-control me-2" type="search" placeholder="Pesquisar por Título" id="titulo" name="titulo">
                     <button class="btn btn-outline-success me-2" type="submit">Pesquisar</button>
                 </form>
             </div>
+            <div>
+                <a href="addartigo.php" class="btn btn-outline-light me-2">Novo Artigo</a>
+                <button class="btn btn-danger" id="backBtn">Voltar</button>
+            </div>
         </div>
     </nav>
-
     <main class="container mt-4">
         <div id="container-artigos">
             <!-- Artigos serão inseridos dinamicamente aqui -->
         </div>
     </main>
+
+    <script>
+  document.getElementById("backBtn").addEventListener("click", function(){
+    history.back();
+  });
+</script>
 
     <script>        
     $(document).ready(function() {
@@ -61,11 +69,6 @@
                             containerArtigos.append(elementoArtigo);
                         });
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Erro ao buscar artigos:", textStatus, errorThrown); // Log de depuração
-                    console.error("Resposta do servidor:", jqXHR.responseText); // Log de depuração
-                    $('#container-artigos').append('<p>Erro ao buscar artigos.</p>');
                 }
             });
         });
@@ -110,11 +113,6 @@
                         `;
                         containerArtigos.append(elementoArtigo);
                     });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Erro ao buscar artigos:", textStatus, errorThrown); // Log de depuração
-                    console.error("Resposta do servidor:", jqXHR.responseText); // Log de depuração
-                    $('#container-artigos').append('<p>Erro ao buscar artigos.</p>');
                 }
             });
         });

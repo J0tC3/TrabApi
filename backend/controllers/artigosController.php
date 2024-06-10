@@ -41,8 +41,8 @@ class artigosController extends controller{
     public function listarArtigoAutor() {
 
         if (AuthController::checkAuth() != false) {
-            $autor = AuthController::checkAuth();
-            $autor = $autor['nome'];
+            $resposta = AuthController::checkAuth();
+            $autor = $resposta['nome'];
         } else {
             if (!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
     
@@ -65,8 +65,8 @@ class artigosController extends controller{
     public function listarAutor() 
     { 
         if (AuthController::checkAuth() != false) {
-            $autor = AuthController::checkAuth();
-            $autor = $autor['nome'];
+            $resposta = AuthController::checkAuth();
+            $autor = $resposta['nome'];
         } else {
             if (!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
     
