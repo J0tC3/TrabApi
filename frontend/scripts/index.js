@@ -119,3 +119,11 @@ document.getElementById('nextPageButton').addEventListener('click', function() {
 
     fetchAndRenderArtigos();
 });
+
+const btnLogin = document.getElementById('btnLogin');
+
+
+btnLogin.addEventListener('click', () => {
+    console.log("casd")
+    window.open('./login2', '_self');
+});
