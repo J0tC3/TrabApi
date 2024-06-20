@@ -25,7 +25,7 @@
                 </form>
             </div>
             <div>
-                <a href=".php" class="btn btn-outline-light me-2">Meus Dados</a>
+                <a href="InfoUsuario.php" class="btn btn-outline-light me-2">Meus Dados</a>
                 <a href="artigosuser.php" class="btn btn-outline-light">Meus Artigos</a>
             </div>
         </div>

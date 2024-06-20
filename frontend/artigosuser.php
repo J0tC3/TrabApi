@@ -43,7 +43,7 @@
     <script>        
     $(document).ready(function() {
             $.ajax({
-                url: 'http://localhost/TrabApi/backend/listarAutor',
+                url: 'http://localhost/TrabApi/backend/InfoUser',
                 method: 'GET',
                 headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('user_token_jwt')
@@ -81,7 +81,7 @@
                 let data = {};
 
                 if (titulo) {
-                    url = 'http://localhost/TrabApi/backend/listarArtigoAutor';
+                    url = 'http://localhost/TrabApi/backend/AutorLogTitulo';
                     data = {'titulo': titulo};
                 } else {
                     alert("Informe ao menos um Título para pesquisa");
@@ -98,7 +98,7 @@
                 dataType: 'json',
                 success: function(response) {
                     const containerArtigos = $('#container-artigos');
-                    containerArtigos.empty(); // Limpa os artigos anteriores
+                    containerArtigos.empty();
                     response.forEach(artigo => {
                         const elementoArtigo = `
                             <div class="card mb-3">

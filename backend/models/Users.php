@@ -16,6 +16,19 @@ class Users extends model{
 		return $array;
 	}
 
+    public function Keypass($username){
+        $sql = "SELECT passcode FROM tab_user
+        WHERE username LIKE :username";
+            
+            $stmt->bindValue(':username', $username);
+
+            if($stml->rowCount() > 0){
+                $array = $stml->fetchAll(\PDO::FETCH_ASSOC);
+            }	
+    
+            return $array;
+    }
+
     //Criar novo Usuário
     public function criarUsuario($username, $passcode, $email) {
         $sql = "INSERT INTO tab_user
@@ -43,6 +56,24 @@ class Users extends model{
         $stmt->bindValue(':email', $email);
     
         $stmt->execute();
+    }
+
+    public function InfoUser($username) {
+
+        $sql = "SELECT * FROM tab_user
+                WHERE username LIKE :username";
+                
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindValue(':username', $username);
+
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0) {
+            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }   
+        
+        return $array;
     }
 
     //Deletar Usuário    

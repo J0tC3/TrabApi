@@ -8,13 +8,15 @@ class UsersController extends controller{
 		$this->dados = array();
 	}
 
-	public function userExists($username) {
+	public function userExists($username,$passcode) {
 		$user = new Users();
 		$lista = $user->getAll();
 
 		foreach ($lista as $usuario) {
-			if($username == $usuario['username'] ) {
-				return true;
+			if($username == $usuario['username']) {
+				if($passcode == $user->Keypass($username)){
+					return true;
+				}
 			}
 		}
 		
@@ -75,6 +77,25 @@ class UsersController extends controller{
 
         $alter = new Users();
         $alter->alterUsuario($id,$username, $passcode, $email);
+    }
+
+	public function InfoUser() 
+    { 
+        if (AuthController::checkAuth() != false) {
+            $resposta = AuthController::checkAuth();
+            $autor = $resposta['nome'];
+        } else {
+
+        }
+    
+        $user = new Users();
+        $lista = $user->InfoUser($autor);
+        
+        // Converte o array $lista para JSON 
+        $json_lista = json_encode($lista);
+        
+        // Saída do JSON data
+        echo $json_lista;
     }
 
     public function dropusuario() {
