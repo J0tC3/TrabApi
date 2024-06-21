@@ -1,6 +1,38 @@
 let currentPage = 1;
 const articlesPerPage = 5;
 
+const token = localStorage.getItem('user_token_jwt');
+const btnLoginSearchBox = document.getElementById('btnLoginSearchBox');
+
+let btnProfile = null;
+let btnLogin = null;
+
+if(token == '' || token == null) {
+    btnLogin = document.createElement('button');
+
+    btnLogin.id = 'btnLogin';
+    btnLogin.type = 'button';
+    btnLogin.textContent = 'Login';
+
+    btnLogin.addEventListener('click', () => {
+        window.open('./login2', '_self');
+    });
+
+    btnLoginSearchBox.appendChild(btnLogin);
+} else {
+    btnProfile = document.createElement('button');
+    btnProfile.id = 'btnPerfil';
+    btnProfile.type = 'button';
+    btnProfile.textContent = 'Perfil';
+
+    btnProfile.addEventListener('click', () => {
+        window.open('./profilePage', '_self');
+    });
+
+    btnLoginSearchBox.appendChild(btnProfile);
+}   
+
+
 function limparArtigosBody() {
     const artigosBody = document.getElementById('artigosBody');
 
@@ -118,12 +150,4 @@ document.getElementById('nextPageButton').addEventListener('click', function() {
     currentPage++;
 
     fetchAndRenderArtigos();
-});
-
-const btnLogin = document.getElementById('btnLogin');
-
-
-btnLogin.addEventListener('click', () => {
-    console.log("casd")
-    window.open('./login2', '_self');
 });
