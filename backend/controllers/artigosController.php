@@ -78,9 +78,9 @@ class artigosController extends controller{
     
     // Listar artigos por autor
     public function listarAutor() {
-        if(!(isset($_POST['autor']) && !empty($_POST['autor']))) return;
+        if(!(isset($_GET['autor']) && !empty($_GET['autor']))) return;
 
-        $autor = $_POST['autor'];
+        $autor = $_GET['autor'];
 
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
@@ -119,17 +119,29 @@ class artigosController extends controller{
 
     //Excluir artigo
     public function excluirArtigo() {
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(!AuthController::checkAuth()) return;
-
-        if(!(isset($_POST['id']) && !empty($_POST['id']))) return;
-
+        // Retorna um array com o nome do usuário caso ele exista
+        $username = AuthController::checkAuth(false);
+        
+        if ($username == false || !(isset($_POST['id']) && !empty($_POST['id']))) {
+            output_header(false, 'Usuário não autenticado ou ID do artigo não fornecido');
+            return;
+        }
+    
+        $username = $username['nome'];
         $id = $_POST['id'];
-
+    
         $artigo = new Artigos();
-        $artigo->dropArtigo($id);
-
-        output_header(true, 'Artigo excluido');
+        
+        // Verifica se o artigo existe
+        if (!$artigo->artigoExiste($id, $username)) {
+            output_header(false, 'Artigo não encontrado ou não pertence ao usuário');
+            return;
+        }
+    
+        // Exclui o artigo
+        $artigo->excluirArtigo($id, $username);
+    
+        output_header(true, 'Artigo excluído');
     }
 
 }

@@ -105,7 +105,6 @@ function fetchArtigoAutor() {
             }
         });
     });
-    
 }
 
 function fetchAndRenderArtigos() {

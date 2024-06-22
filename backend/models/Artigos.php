@@ -119,8 +119,6 @@ class Artigos extends model{
     //Listar Por Autores dos artigos
     public function getAutor($autor) {
         $array = array();
-    
-        $autor = '%'.$autor.'%';
         
         $sql = "SELECT *
                 FROM tab_artigo
@@ -140,14 +138,14 @@ class Artigos extends model{
     }
 
     //Excluir Artigo
-    public function dropArtigo($artigo){
-
+    public function excluirArtigo($artigo, $username) {
         $sql = "DELETE FROM tab_artigo
-            WHERE id = ?";
+                WHERE id = ? AND autor = ?";
         
         $stmt = $this->db->prepare($sql);
         
-        $stmt->execute([$artigo]);
+        // Execute a consulta com os parâmetros $artigo e $username
+        $stmt->execute([$artigo, $username]);
     }
 
     //Excluir Todos o Artigos do Autor
@@ -159,6 +157,16 @@ class Artigos extends model{
         $stmt = $this->db->prepare($sql);
         
         $stmt->execute([$autor]);
+    }
+
+    public function artigoExiste($id, $username) {
+        $sql = "SELECT COUNT(*) FROM tab_artigo WHERE id = ? AND autor = ?";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id, $username]);
+        
+        // Retorna true se o artigo existe, false caso contrário
+        return $stmt->fetchColumn() > 0;
     }
 
 }

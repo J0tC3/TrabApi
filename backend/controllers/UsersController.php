@@ -8,12 +8,12 @@ class UsersController extends controller{
 		$this->dados = array();
 	}
 
-	public function userExists($username) {
+	public function userExists($username, $passcode) {
 		$user = new Users();
 		$lista = $user->getAll();
 
 		foreach ($lista as $usuario) {
-			if($username == $usuario['username'] ) {
+			if($username == $usuario['username'] && $passcode == $usuario['passcode']) {
 				return true;
 			}
 		}
@@ -69,6 +69,7 @@ class UsersController extends controller{
 		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
 		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
 
+		$id = $_POST['id'];
 		$username = $_POST['username'];
 		$passcode = $_POST['passcode'];
 		$email = $_POST['email'];
