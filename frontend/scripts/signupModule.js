@@ -1,7 +1,7 @@
 (() => {
     const token = localStorage.getItem('user_token_jwt');
 
-    if(token != '' || token != null) {
+    if(token !== null) {
         window.open('./home', '_self');
     }
 
