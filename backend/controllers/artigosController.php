@@ -48,13 +48,17 @@ class artigosController extends controller{
     }
 
     public function listarArtigoAutor() {
-        if(!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
-        && !(isset($_GET['autor']) && !empty($_GET['autor']))) return;
+        if (!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
+        || !(isset($_GET['autor']) && !empty($_GET['autor']))) {
+            // Se alguma das chaves não estiver presente, retorna um erro ou mensagem adequada
+            echo json_encode(['error' => 'Parâmetros "titulo" e "autor" são obrigatórios']);
+            return;
+        }
     
         // Define a página padrão como 1 se não especificada
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
     
-        $limite = null;
+        $limite = 5;
     
         if(isset($_GET['limite']) && !empty($_GET['limite'])) {
             $limite = $_GET['limite'];

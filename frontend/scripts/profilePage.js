@@ -2,7 +2,7 @@
     const token = localStorage.getItem('user_token_jwt');
 
     if(token == '' || token == null) {
-        window.open('./login2', '_self');
+        window.open('./login', '_self');
     }
 
     function salvarArtigo(id) {
@@ -403,7 +403,7 @@
 
             editarUsuario(username, email, passcode);
             localStorage.removeItem('user_token_jwt');
-            window.open('./login2', '_self');
+            window.open('./login', '_self');
         });
 
         btnCancelar.addEventListener('click', () => {

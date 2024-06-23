@@ -1,32 +1,40 @@
-const btnLogin = document.getElementById('btnLogin');
+(() => {
+    const token = localStorage.getItem('user_token_jwt');
 
-btnLogin.addEventListener('click', loginApi);
+    if(token != '' || token != null) {
+        window.open('./home', '_self');
+    }
 
-//envia as credenciais e recebe um token caso elas existam no banco
-function loginApi() {
-    const username = $("#inputUsername").val();
-    const passcode = $("#inputPassword").val();
+    const btnLogin = document.getElementById('btnLogin');
 
-    $.ajax({
-        url: "http://localhost/TrabApi/backend/login",
-        method: 'POST',
-        data: {'username' : username, 'passcode': passcode},
-        })
-        .done(function( data ) {
-            localStorage.setItem('user_token_jwt', data);
-            window.open('./home', '_self');
-        }
-    );
-}
+    btnLogin.addEventListener('click', loginApi);
 
-const btnVoltar = document.getElementById('btnVoltar');
+    //envia as credenciais e recebe um token caso elas existam no banco
+    function loginApi() {
+        const username = $("#inputUsername").val();
+        const passcode = $("#inputPassword").val();
 
-btnVoltar.addEventListener('click', () => {
-    window.open('./home', '_self');
-});
+        $.ajax({
+            url: "http://localhost/TrabApi/backend/login",
+            method: 'POST',
+            data: {'username' : username, 'passcode': passcode},
+            })
+            .done(function( data ) {
+                localStorage.setItem('user_token_jwt', data);
+                window.open('./home', '_self');
+            }
+        );
+    }
 
-const btnCriar = document.getElementById('btnCriar');
+    const btnVoltar = document.getElementById('btnVoltar');
 
-btnCriar.addEventListener('click', () => {
-    window.open('./signup', '_self');
-});
+    btnVoltar.addEventListener('click', () => {
+        window.open('./home', '_self');
+    });
+
+    const btnCriar = document.getElementById('btnCriar');
+
+    btnCriar.addEventListener('click', () => {
+        window.open('./signup', '_self');
+    });
+})();
