@@ -115,7 +115,7 @@ span {
     width: 100vw;
 }
 
-#modalEditarAdicionarArtigo {
+#modalEditarAdicionarArtigo, #modalEditarPerfil {
     background-color: white;
     height: 540px;
     width: 500px;

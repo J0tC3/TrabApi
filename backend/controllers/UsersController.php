@@ -44,7 +44,7 @@ class UsersController extends controller{
 
 		$users = new UsersController();
 
-		if($users->userExists($username)) {
+		if($users->userExists($username, $passcode)) {
 			$response = ['msg' => "Usuário já existe"];
 			
 			// Converte o array $response para JSON 
@@ -63,20 +63,36 @@ class UsersController extends controller{
 		echo json_encode($response);
 	}
 
-    public function alterUsuario() {
-		if(!(isset($_POST['id']) && !empty($_POST['id']))
-		|| !(isset($_POST['username']) && !empty($_POST['username']))
-		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
-		|| !(isset($_POST['email']) && !empty($_POST['email']))) return;
+	public function alterUsuario() {
+		$authData = AuthController::checkAuth(false);
 
-		$id = $_POST['id'];
+		// Verifica se o usuário está autenticado
+		if ($authData == false) {
+			output_header(false, 'Token não válido ou usuário não autenticado');
+			return;
+		}
+	
+		if (!(isset($_POST['username']) && !empty($_POST['username']))
+			|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
+			|| !(isset($_POST['email']) && !empty($_POST['email']))) {
+			output_header(false, 'Parâmetros insuficientes');
+			return;
+		}
+
 		$username = $_POST['username'];
 		$passcode = $_POST['passcode'];
 		$email = $_POST['email'];
 
-        $alter = new Users();
-        $alter->alterUsuario($id,$username, $passcode, $email);
-    }
+		$user = new Users();
+		$userData = $user->getUserDataByUsername($authData['nome']);
+	
+		$id = $userData['id_user'];
+
+		$alter = new Users();
+		$alter->alterUsuario($id, $username, $passcode, $email);
+	
+		output_header(true, 'Usuário atualizado com sucesso');
+	}
 
     public function dropusuario() {
         if(!(isset($_POST['$id']) && !empty($_POST['$id']))) return;
@@ -90,4 +106,23 @@ class UsersController extends controller{
         $delete->dropUsuario($id);
     }
 
+	public function getUserData() {
+		// Verifica se o usuário está autenticado
+		$authData = AuthController::checkAuth(false);
+	
+		if ($authData === false) {
+			output_header(false, 'Token não válido ou usuário não autenticado');
+			return;
+		}
+
+		$username = $authData['nome'];
+		$user = new Users();
+		$userData = $user->getUserDataByUsername($username);
+	
+		if ($userData) {
+			echo json_encode($userData);
+		} else {
+			output_header(false, 'Usuário não encontrado');
+		}
+	}	
 }

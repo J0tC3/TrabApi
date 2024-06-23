@@ -34,7 +34,7 @@ class Users extends model{
     public function alterUsuario($id, $username, $passcode, $email) {
         $sql = "UPDATE tab_user
                 SET username = :username, passcode = :passcode, email = :email 
-                WHERE id = :id";
+                WHERE id_user = :id";
         $stmt = $this->db->prepare($sql);
         
         $stmt->bindValue(':id', $id);
