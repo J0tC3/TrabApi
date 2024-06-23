@@ -19,6 +19,7 @@ class Core{
 		$router->addRoute('/alterUsuario', array(new UsersController(), 'alterUsuario'));
 		$router->addRoute('/dropUsuario', array(new UsersController(), 'dropUsuario'));
 		$router->addRoute('/checkauth', array(new AuthController(), 'checkAuth'));
+		$router->addRoute('/editarArtigo', array(new artigosController(), 'editarArtigo'));
 		
 		
 		$router->addRoute('/login', array(new AuthController(), 'login'));

@@ -94,13 +94,16 @@ class artigosController extends controller{
 
     //Criar Artigo
     public function criarArtigo(){
-        //se for verdadeiro, nao retorne, se for falso, retorne (nao execute a funcao)
-        if(AuthController::checkAuth() == false) return;  
+        if(AuthController::checkAuth(false) == false) return;  
 
-        $autor = AuthController::checkAuth();
+        $autor = AuthController::checkAuth(false);
 
         $autor = $autor['nome'];
 
+        $users = new Users();
+        $userData = $users->getUserDataByUsername($autor);
+
+        $email = $userData['email'];
 
         if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
         if(!(isset($_POST['descricao']) && !empty($_POST['descricao']))) return;
@@ -112,7 +115,7 @@ class artigosController extends controller{
 
         $artigo = new Artigos();
         
-        $artigo->createArtigo($titulo, $descricao, $link, $autor);
+        $artigo->createArtigo($titulo, $descricao, $link, $autor, $email);
         output_header(true, 'Artigo Criado');
 
     }
@@ -142,6 +145,44 @@ class artigosController extends controller{
         $artigo->excluirArtigo($id, $username);
     
         output_header(true, 'Artigo excluído');
+    }
+
+    //Editar Artigo
+    public function editarArtigo() {
+        // Retorna um array com o nome do usuário caso ele exista
+        $username = AuthController::checkAuth(false);
+        
+        if ($username == false || !(isset($_POST['id']) && !empty($_POST['id']))) {
+            output_header(false, 'Usuário não autenticado ou ID do artigo não fornecido');
+            return;
+        }
+    
+        $username = $username['nome'];
+        $id = $_POST['id'];
+        $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
+        $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : null;
+        $link = isset($_POST['link']) ? $_POST['link'] : null;
+    
+        if ($titulo === null || $descricao === null || $link === null) {
+            output_header(false, 'Dados do artigo incompletos');
+            return;
+        }
+    
+        $artigo = new Artigos();
+        
+        // Verifica se o artigo existe
+        if (!$artigo->artigoExiste($id, $username)) {
+            output_header(false, 'Artigo não encontrado ou não pertence ao usuário');
+            return;
+        }
+    
+        // Edita o artigo
+        try {
+            $artigo->editarArtigo($id, $titulo, $descricao, $link, $username);
+            output_header(true, 'Artigo atualizado com sucesso');
+        } catch (Exception $e) {
+            output_header(false, 'Erro ao atualizar artigo: ' . $e->getMessage());
+        }
     }
 
 }

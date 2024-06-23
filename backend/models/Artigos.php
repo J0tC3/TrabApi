@@ -2,18 +2,11 @@
 class Artigos extends model{
 
     //Criar Artigo
-    public function createArtigo($titulo, $descricao, $link, $autor){
-        // Recupera o email do autor a partir do banco de dados
-        $sqlEmail = "SELECT email FROM tab_user WHERE username = :username";
-        $stmtEmail = $this->db->prepare($sqlEmail);
-        $stmtEmail->bindValue(':username', $autor);
-        $stmtEmail->execute();
-        $email = $stmtEmail->fetchColumn();
-
+    public function createArtigo($titulo, $descricao, $link, $autor, $email){
         // Insere o artigo no banco de dados
         $sql = "INSERT INTO tab_artigo 
-        (titulo, descricao, link, autor, email)
-            VALUES (:titulo, :descricao, :link, :autor, :email)";
+        (titulo, autor, emailAutor, link, descricao)
+            VALUES (:titulo, :autor, :email, :link, :descricao)";
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':titulo', $titulo);
@@ -22,6 +15,23 @@ class Artigos extends model{
         $stmt->bindValue(':autor', $autor);
         $stmt->bindValue(':email', $email);
 
+        $stmt->execute();
+    }
+
+    public function editarArtigo($id, $titulo, $descricao, $link, $autor) {
+        // Atualiza os detalhes do artigo no banco de dados
+        $sql = "UPDATE tab_artigo
+                SET titulo = :titulo, descricao = :descricao, link = :link
+                WHERE id = :id AND autor = :autor";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindValue(':titulo', $titulo);
+        $stmt->bindValue(':descricao', $descricao);
+        $stmt->bindValue(':link', $link);
+        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':autor', $autor);
+        
         $stmt->execute();
     }
 

@@ -32,7 +32,7 @@ input {
 
 input:focus {
     outline: none;
-    border: 3px solid var(--buttonColor);
+    border: 3px solid var(--borderColor);
 }
 
 button, a {

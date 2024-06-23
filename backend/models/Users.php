@@ -52,4 +52,18 @@ class Users extends model{
         $stmt->bindValue(':id', $id);
         $stmt->execute();
     }
+
+    // Retornar dados do usuário pelo username
+    public function getUserDataByUsername($username) {
+        $sql = "SELECT * FROM tab_user WHERE username = :username";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':username', $username);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
+
+        return null;
+    }
 }
