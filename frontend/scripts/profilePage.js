@@ -401,7 +401,7 @@
             const email = inputEmail.value;
             const passcode = inputPassword.value;
 
-            editarUsuario(username, email, passcode);
+            editarUsuario(username, passcode, email);
             localStorage.removeItem('user_token_jwt');
             window.open('./login', '_self');
         });

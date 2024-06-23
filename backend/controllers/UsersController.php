@@ -36,8 +36,7 @@ class UsersController extends controller{
 	public function createUsuario() {
 		if(!(isset($_POST['username']) && !empty($_POST['username']))
 		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
-		|| !(isset($_POST['email']) && !empty($_POST['email']))){ return;
-	}
+		|| !(isset($_POST['email']) && !empty($_POST['email']))){ return; }
 		$username = $_POST['username'];
 		$passcode = $_POST['passcode'];
 		$email = $_POST['email'];
@@ -83,13 +82,18 @@ class UsersController extends controller{
 		$passcode = $_POST['passcode'];
 		$email = $_POST['email'];
 
+		$artigos = new Artigos();
 		$user = new Users();
+
 		$userData = $user->getUserDataByUsername($authData['nome']);
 	
 		$id = $userData['id_user'];
 
-		$alter = new Users();
-		$alter->alterUsuario($id, $username, $passcode, $email);
+		$oldAutor = $userData['autor'];
+		$oldEmail = $userData['autorEmail'];
+
+		$artigos->editarAutorEmailAutor($oldAutor, $oldEmail, $username, $email);
+		$user->alterUsuario($id, $username, $passcode, $email);
 	
 		output_header(true, 'Usuário atualizado com sucesso');
 	}

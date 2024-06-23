@@ -35,6 +35,22 @@ class Artigos extends model{
         $stmt->execute();
     }
 
+    public function editarAutorEmailAutor($oldAutor, $oldEmailAutor, $newAutor, $newEmailAutor) {
+        // Atualiza o autor e emailAutor de todos os artigos que possuem o autor e emailAutor igual aos passados por parâmetros
+        $sql = "UPDATE tab_artigo
+                SET autor = :newAutor, emailAutor = :newEmailAutor
+                WHERE autor = :oldAutor AND emailAutor = :oldEmailAutor";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindValue(':newAutor', $newAutor);
+        $stmt->bindValue(':newEmailAutor', $newEmailAutor);
+        $stmt->bindValue(':oldAutor', $oldAutor);
+        $stmt->bindValue(':oldEmailAutor', $oldEmailAutor);
+        
+        $stmt->execute();
+    }
+
     //Listar todos os artigos
     public function getAll($limit) {
         $array = array();
