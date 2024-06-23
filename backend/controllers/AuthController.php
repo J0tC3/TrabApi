@@ -80,9 +80,12 @@ class AuthController extends controller{
             }
         }
     
-        // Retorna uma resposta de erro em JSON se a autenticação falhar
-        header('Content-Type: application/json');
-        echo json_encode(array("error" => "Unauthorized"));
+        if($printRetorno) {
+            // Retorna uma resposta de erro em JSON se a autenticação falhar
+            header('Content-Type: application/json');
+            echo json_encode(array("error" => "Unauthorized"));
+        }
+
         return false;
     }
 }

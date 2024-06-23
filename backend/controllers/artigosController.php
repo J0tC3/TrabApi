@@ -98,7 +98,10 @@ class artigosController extends controller{
 
     //Criar Artigo
     public function criarArtigo(){
-        if(AuthController::checkAuth(false) == false) return;  
+        if(AuthController::checkAuth(false) == false) {
+            output_header(false, 'Token Invalido');
+            return;
+        }  
 
         $autor = AuthController::checkAuth(false);
 
@@ -109,9 +112,12 @@ class artigosController extends controller{
 
         $email = $userData['email'];
 
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))) return;
-        if(!(isset($_POST['descricao']) && !empty($_POST['descricao']))) return;
-        if(!(isset($_POST['link']) && !empty($_POST['link']))) return;
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo'])) 
+        || !(isset($_POST['descricao']) && !empty($_POST['descricao']))
+        || !(isset($_POST['link']) && !empty($_POST['link']))) {
+            output_header(false, 'Dados insuficientes');
+            return;
+        }
 
         $titulo = $_POST['titulo'];
         $descricao = $_POST['descricao'];
@@ -121,7 +127,6 @@ class artigosController extends controller{
         
         $artigo->createArtigo($titulo, $descricao, $link, $autor, $email);
         output_header(true, 'Artigo Criado');
-
     }
 
     //Excluir artigo
