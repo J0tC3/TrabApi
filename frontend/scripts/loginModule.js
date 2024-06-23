@@ -20,7 +20,9 @@
             data: {'username' : username, 'passcode': passcode},
             })
             .done(function( data ) {
-                localStorage.setItem('user_token_jwt', data);
+                if(data !== '') {
+                    localStorage.setItem('user_token_jwt', data);
+                }
                 window.open('./home', '_self');
             }
         );

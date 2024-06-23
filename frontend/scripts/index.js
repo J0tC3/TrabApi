@@ -8,7 +8,7 @@
     let btnProfile = null;
     let btnLogin = null;
 
-    if(token == '' || token == null) {
+    if(token == null) {
         btnLogin = document.createElement('button');
 
         btnLogin.id = 'btnLogin';
