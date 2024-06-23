@@ -43,7 +43,7 @@
     <script>        
     $(document).ready(function() {
             $.ajax({
-                url: 'http://localhost/TrabApi/backend/InfoUser',
+                url: 'http://localhost/TrabApi/backend/AutorLog',
                 method: 'GET',
                 headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('user_token_jwt')

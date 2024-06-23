@@ -16,19 +16,6 @@ class Users extends model{
 		return $array;
 	}
 
-    public function Keypass($username){
-        $sql = "SELECT passcode FROM tab_user
-        WHERE username LIKE :username";
-            
-            $stmt->bindValue(':username', $username);
-
-            if($stml->rowCount() > 0){
-                $array = $stml->fetchAll(\PDO::FETCH_ASSOC);
-            }	
-    
-            return $array;
-    }
-
     //Criar novo Usuário
     public function criarUsuario($username, $passcode, $email) {
         $sql = "INSERT INTO tab_user

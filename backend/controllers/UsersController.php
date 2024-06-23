@@ -13,10 +13,8 @@ class UsersController extends controller{
 		$lista = $user->getAll();
 
 		foreach ($lista as $usuario) {
-			if($username == $usuario['username']) {
-				if($passcode == $user->Keypass($username)){
+			if(($username == $usuario['username']) && ($passcode == $usuario['passcode'])) {
 					return true;
-				}
 			}
 		}
 		
