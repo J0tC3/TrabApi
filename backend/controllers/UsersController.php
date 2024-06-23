@@ -89,8 +89,8 @@ class UsersController extends controller{
 	
 		$id = $userData['id_user'];
 
-		$oldAutor = $userData['autor'];
-		$oldEmail = $userData['autorEmail'];
+		$oldAutor = $userData['username'];
+		$oldEmail = $userData['email'];
 
 		$artigos->editarAutorEmailAutor($oldAutor, $oldEmail, $username, $email);
 		$user->alterUsuario($id, $username, $passcode, $email);
