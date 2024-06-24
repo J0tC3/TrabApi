@@ -47,7 +47,7 @@ class Users extends model{
 
     //Deletar Usuário    
     public function dropUsuario($id){
-        $sql = "DELETE FROM tab_user WHERE id = :id";
+        $sql = "DELETE FROM tab_user WHERE id_user = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();

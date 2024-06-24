@@ -109,19 +109,21 @@
     }
 
     function fetchAndRenderArtigos() {
-        fetchArtigoAutor().then(function(dados) {
-            limparArtigosBody();
-            if(Array.isArray(dados)) {
-                dados.forEach(artigo => {
-                    criarArtigoHTML(artigo.titulo, artigo.autor, artigo.descricao, artigo.link);
-                });
-                window.scrollTo(0,0); 
-            }else {
-                console.error(dados.error);
-                currentPage--;
+        fetchArtigoAutor().then(function(dados) {  
+            console.log(dados)
+            if(dados.status != false) {
+                if(dados.length > 0) {
+                    limparArtigosBody();
+                    dados.forEach(artigo => {
+                        criarArtigoHTML(artigo.titulo, artigo.autor, artigo.descricao, artigo.link);
+                    });
+                    window.scrollTo(0,0); 
+                }else{
+                    return true;
+                }
             }
         }).catch(function(error) {
-            console.error('Erro ao buscar artigos:', error);
+            console.log('Erro ao buscar artigos:', error);
         });
     }
 
@@ -145,15 +147,14 @@
     document.getElementById('prevPageButton').addEventListener('click', function() {
         if(currentPage == 1) return;
 
-        currentPage--;
+        const vazio = fetchAndRenderArtigos();
 
-        fetchAndRenderArtigos();
+        if(vazio) currentPage--;
+        
     });
 
     // Evento de clique no botão de próxima página
     document.getElementById('nextPageButton').addEventListener('click', function() {
         currentPage++;
-
-        fetchAndRenderArtigos();
     });
 })();

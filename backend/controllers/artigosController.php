@@ -50,16 +50,15 @@ class artigosController extends controller{
     public function listarArtigoAutor() {
         if (!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
         && !(isset($_GET['autor']) && !empty($_GET['autor']))) {
-            // Se alguma das chaves não estiver presente, retorna um erro ou mensagem adequada
-            echo json_encode(['error' => 'Parâmetros "titulo" ou "autor" são obrigatórios']);
+            output_header(false, 'Parametro "titulo" ou "autor" e obrigatorio');
             return;
         }
-    
+
         // Define a página padrão como 1 se não especificada
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
     
         $limite = 5;
-    
+        
         if(isset($_GET['limite']) && !empty($_GET['limite'])) {
             $limite = $_GET['limite'];
         }
@@ -67,8 +66,8 @@ class artigosController extends controller{
         // Calcula o offset para a consulta com base na página atual
         $offset = ($page - 1) * $limite;
     
-        $titulo = $_GET['titulo'];
-        $autor = $_GET['autor'];
+        $titulo = isset($_GET['titulo']) ? $_GET['titulo'] : '';
+        $autor = isset($_GET['autor']) ? $_GET['autor'] : '';
     
         $artigo = new Artigos();
         $lista = $artigo->getTituloAutor($titulo, $autor, $limite, $offset);
