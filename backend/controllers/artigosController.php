@@ -49,9 +49,9 @@ class artigosController extends controller{
 
     public function listarArtigoAutor() {
         if (!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
-        || !(isset($_GET['autor']) && !empty($_GET['autor']))) {
+        && !(isset($_GET['autor']) && !empty($_GET['autor']))) {
             // Se alguma das chaves não estiver presente, retorna um erro ou mensagem adequada
-            echo json_encode(['error' => 'Parâmetros "titulo" e "autor" são obrigatórios']);
+            echo json_encode(['error' => 'Parâmetros "titulo" ou "autor" são obrigatórios']);
             return;
         }
     
@@ -99,7 +99,7 @@ class artigosController extends controller{
     //Criar Artigo
     public function criarArtigo(){
         if(AuthController::checkAuth(false) == false) {
-            output_header(false, 'Token Invalido');
+            output_header(false, 'Usuário não autenticado');
             return;
         }  
 
@@ -134,8 +134,11 @@ class artigosController extends controller{
         // Retorna um array com o nome do usuário caso ele exista
         $username = AuthController::checkAuth(false);
         
-        if ($username == false || !(isset($_POST['id']) && !empty($_POST['id']))) {
-            output_header(false, 'Usuário não autenticado ou ID do artigo não fornecido');
+        if ($username == false) {
+            output_header(false, 'Usuário não autenticado');
+            return;
+        }else if(!(isset($_POST['id']) && !empty($_POST['id']))) {
+            output_header(false, 'Id do artigo vazio/não provido');
             return;
         }
     
@@ -146,7 +149,7 @@ class artigosController extends controller{
         
         // Verifica se o artigo existe
         if (!$artigo->artigoExiste($id, $username)) {
-            output_header(false, 'Artigo não encontrado ou não pertence ao usuário');
+            output_header(false, 'Artigo não encontrado');
             return;
         }
     
@@ -161,22 +164,27 @@ class artigosController extends controller{
         // Retorna um array com o nome do usuário caso ele exista
         $username = AuthController::checkAuth(false);
         
-        if ($username == false || !(isset($_POST['id']) && !empty($_POST['id']))) {
-            output_header(false, 'Usuário não autenticado ou ID do artigo não fornecido');
+        if ($username == false) {
+            output_header(false, 'Usuário não autenticado');
+            return;
+        }else if(!(isset($_POST['id']) && !empty($_POST['id']))) {
+            output_header(false, 'Id do artigo vazio/não provido');
             return;
         }
     
+        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))
+        || !(isset($_POST['descricao']) && !empty($_POST['descricao']))
+        || !(isset($_POST['link']) && !empty($_POST['link']))) {
+            output_header(false, 'Dados do artigo incompletos');
+            return;
+        }
+
         $username = $username['nome'];
         $id = $_POST['id'];
         $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
         $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : null;
         $link = isset($_POST['link']) ? $_POST['link'] : null;
-    
-        if ($titulo === null || $descricao === null || $link === null) {
-            output_header(false, 'Dados do artigo incompletos');
-            return;
-        }
-    
+
         $artigo = new Artigos();
         
         // Verifica se o artigo existe
