@@ -106,7 +106,7 @@ class AuthController extends controller{
         if ($printRetorno) {
             // Retorna uma resposta de erro em JSON se a autenticação falhar
             header('Content-Type: application/json');
-            echo json_encode(array("error" => "Unauthorized"));
+            echo json_encode(array("error" => "Token Inválido"));
         }
     
         return false;

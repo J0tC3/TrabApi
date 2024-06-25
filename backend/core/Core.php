@@ -20,7 +20,7 @@ class Core{
 		$router->addRoute('/getUserData', array(new UsersController(), 'getUserData'));
 		$router->addRoute('/deletarUsuario', array(new UsersController(), 'deletarUsuario'));
 
-		$router->addRoute('/checkauth', array(new AuthController(), 'checkAuth'));
+		$router->addRoute('/checkAuth', array(new AuthController(), 'checkAuth'));
 		$router->addRoute('/login', array(new AuthController(), 'login'));
 
 		//lidando com a requisição

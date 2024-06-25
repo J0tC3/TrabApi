@@ -98,6 +98,12 @@ class UsersController extends controller{
 	
 		$artigos = new Artigos();
 		$user = new Users();
+		$userController = new UsersController();
+
+		if($userController->userExists($username, $passcode)) {
+			output_header(false, 'Usuario ja existe!');
+			return;
+		}
 	
 		// Obtém o ID do usuário a partir dos dados autenticados
 		$userData = $user->getUserDataByUsername($authData['nome']);
