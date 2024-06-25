@@ -297,8 +297,7 @@
             });
         });
     }
-    
-    
+       
     function deletarArtigo(id) {
         const token = localStorage.getItem('user_token_jwt');
     
@@ -320,13 +319,14 @@
 
     function editarUsuario(username, passcode, email) {
         const token = localStorage.getItem('user_token_jwt');
-
+    
         $.ajax({
-            url: 'http://localhost/TrabApi/backend/alterUsuario',
-            method: 'POST',
+            url: 'http://localhost/TrabApi/backend/editarUsuario',
+            method: 'PUT',
             dataType: 'json',
             headers: { 'Authorization': 'Bearer ' + token },
-            data: { 'username': username, 'passcode': passcode, 'email': email },
+            data: JSON.stringify({ 'username': username, 'passcode': passcode, 'email': email }),
+            contentType: 'application/json',
             success: function(response) {
                 console.log('Usuário atualizado com sucesso:', response);
             },

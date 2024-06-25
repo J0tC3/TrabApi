@@ -13,22 +13,29 @@
         const username = $("#inputUsername").val();
         const passcode = $("#inputPassword").val();
         const email = $("#inputEmail").val();
-
+    
+        const requestData = {
+            'username': username,
+            'passcode': passcode,
+            'email': email
+        };
+    
         $.ajax({
-            url: 'http://localhost/TrabApi/backend/createUsuario',
+            url: 'http://localhost/TrabApi/backend/criarUsuario',
             method: 'POST',
-            data: {'username': username, 'passcode': passcode, 'email': email},
+            contentType: 'application/json', // Tipo de conteúdo do request
+            data: JSON.stringify(requestData), // Dados convertidos para JSON
             dataType: 'json',
             success: function(data) {
                 alert("Conta criada com sucesso!");
-                window.open('./login', '_self');
+                window.open('./login', '_self'); // Redireciona para a página de login
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Erro:', textStatus, errorThrown);
-                alert("Erro ao criar conta! Tente novamente ou atualize a pagina!");
+                console.error('Erro ao criar conta:', textStatus, errorThrown);
+                alert("Erro ao criar conta! Tente novamente ou atualize a página.");
             }
         });
-    }
+    }    
 
     const btnVoltar = document.getElementById('btnVoltar');
     btnVoltar.addEventListener('click', () => {

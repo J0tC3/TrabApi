@@ -8,45 +8,6 @@ class artigosController extends controller{
 		$this->dados = array();
 	}
 
-	public function listarTudo() {
-        $limite = null;
-
-        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
-            $limite = $_GET['limite'];
-        }
-
-		$artigo = new Artigos();
-		$lista = $artigo->getAll($limite);
-
-        //  // Converte o array $lista para JSON 
-        $json_lista = json_encode($lista);
-
-        // Saida do JSON data
-        echo $json_lista;
-	}
-
-    // Listar artigos por titulo
-    public function listarTitulo() {
-        if(!(isset($_GET['titulo']) && !empty($_GET['titulo']))) return;
-        
-        $limite = null;
-
-        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
-            $limite = $_GET['limite'];
-        }
-
-        $titulo = $_GET['titulo'];
-
-        $artigo = new Artigos();
-        $lista = $artigo->getTitulo($titulo, $limite);
-
-        // Converte o array $lista para JSON 
-        $json_lista = json_encode($lista);
-
-        // Saida do JSON data
-        echo $json_lista;
-    }
-
     public function listarArtigos() {
         // Verificar se os parâmetros necessários foram enviados no corpo da requisição POST
         $input = json_decode(file_get_contents('php://input'), true);

@@ -21,83 +21,101 @@ class UsersController extends controller{
 		return false;
 	}
 
-	//exemplo de como usar o token para verificacao
-	public function getAll() {
-		if(AuthController::checkAuth()) {
-			//faz algo
-			echo 'deu certo';
+	public function criarUsuario() {
+		// Captura o corpo da requisição
+		$inputJSON = file_get_contents('php://input');
+		
+		// Verifica se há dados no corpo da requisição
+		if (!$inputJSON) {
+			output_header(false, 'Dados de entrada não encontrados');
 			return;
 		}
-
-		//ta bugando essa porra, mas a intencao era avisar q n verificou
-		output_header(false,'Token nao valido',array('consulte o manual da api','manual disponivel em nosso site'));
-	}
-
-	public function createUsuario() {
-		if(!(isset($_POST['username']) && !empty($_POST['username']))
-		|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
-		|| !(isset($_POST['email']) && !empty($_POST['email']))){
+	
+		// Decodifica os dados JSON para um array associativo
+		$input = json_decode($inputJSON, true);
+	
+		// Verifica se todos os campos necessários foram enviados
+		if (!isset($input['username']) || empty($input['username']) ||
+			!isset($input['passcode']) || empty($input['passcode']) ||
+			!isset($input['email']) || empty($input['email'])) {
 			
-            output_header(false, 'Dados incompletos');
-			
-			return; }
-		$username = $_POST['username'];
-		$passcode = $_POST['passcode'];
-		$email = $_POST['email'];
-
+			output_header(false, 'Dados incompletos');
+			return;
+		}
+	
+		$username = $input['username'];
+		$passcode = $input['passcode'];
+		$email = $input['email'];
+	
 		$users = new UsersController();
-
-		if($users->userExists($username, $passcode)) {
-
-            output_header(false, 'Usuário ja cadastrado');
+	
+		if ($users->userExists($username, $passcode)) {
+			output_header(false, 'Usuário já cadastrado');
 			return;
 		}
 		
 		// Cria um novo usuário
 		$create = new Users();
 		$create->criarUsuario($username, $passcode, $email);
-		
-
-		output_header(True, 'Usuário criado com sucesso');
+	
+		output_header(true, 'Usuário criado com sucesso');
 	}
 
-	public function alterUsuario() {
+	public function editarUsuario() {
+		// Captura o corpo da requisição
+		$inputJSON = file_get_contents('php://input');
+		
+		// Verifica se há dados no corpo da requisição
+		if (!$inputJSON) {
+			output_header(false, 'Dados de entrada não encontrados');
+			return;
+		}
+	
+		// Decodifica os dados JSON para um array associativo
+		$input = json_decode($inputJSON, true);
+	
+		// Verifica se os campos necessários estão presentes
+		if (!(isset($input['username']) && !empty($input['username']))
+			|| !(isset($input['passcode']) && !empty($input['passcode']))
+			|| !(isset($input['email']) && !empty($input['email']))) {
+			output_header(false, 'Parâmetros insuficientes');
+			return;
+		}
+	
+		// Recupera os dados do usuário autenticado
 		$authData = AuthController::checkAuth(false);
-
+	
 		// Verifica se o usuário está autenticado
-		if ($authData == false) {
+		if ($authData === false) {
 			output_header(false, 'Token não válido ou usuário não autenticado');
 			return;
 		}
 	
-		if (!(isset($_POST['username']) && !empty($_POST['username']))
-			|| !(isset($_POST['passcode']) && !empty($_POST['passcode']))
-			|| !(isset($_POST['email']) && !empty($_POST['email']))) {
-			output_header(false, 'Parâmetros insuficientes');
-			return;
-		}
-
-		$username = $_POST['username'];
-		$passcode = $_POST['passcode'];
-		$email = $_POST['email'];
-
+		// Obtém o nome de usuário autenticado
+		$username = $input['username'];
+		$passcode = $input['passcode'];
+		$email = $input['email'];
+	
 		$artigos = new Artigos();
 		$user = new Users();
-
-		$userData = $user->getUserDataByUsername($authData['nome']);
 	
+		// Obtém o ID do usuário a partir dos dados autenticados
+		$userData = $user->getUserDataByUsername($authData['nome']);
 		$id = $userData['id_user'];
-
+	
+		// Obtém os valores antigos do autor e do email
 		$oldAutor = $userData['username'];
 		$oldEmail = $userData['email'];
-
+	
+		// Executa as operações de atualização nos artigos e no usuário
 		$artigos->editarAutorEmailAutor($oldAutor, $oldEmail, $username, $email);
 		$user->alterUsuario($id, $username, $passcode, $email);
 	
+		// Retorna sucesso
 		output_header(true, 'Dados do usuário atualizado com sucesso');
 	}
 
-    public function dropUsuario() {
+    public function deletarUsuario() {
 		$authData = AuthController::checkAuth(false);
 
 		// Verifica se o usuário está autenticado
