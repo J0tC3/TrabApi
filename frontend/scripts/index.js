@@ -109,17 +109,17 @@
     }
 
     function fetchAndRenderArtigos() {
-        fetchArtigoAutor().then(function(dados) {  
-            console.log(dados)
+        return fetchArtigoAutor().then(function(dados) {  
             if(dados.status != false) {
                 if(dados.length > 0) {
                     limparArtigosBody();
                     dados.forEach(artigo => {
                         criarArtigoHTML(artigo.titulo, artigo.autor, artigo.descricao, artigo.link);
                     });
-                    window.scrollTo(0,0); 
-                }else{
+                    window.scrollTo(0, 0);
                     return true;
+                } else {
+                    return false;
                 }
             }
         }).catch(function(error) {
@@ -128,17 +128,20 @@
     }
 
     btnPesquisar.addEventListener('click', () => {
+        currentPage = 1;
         fetchAndRenderArtigos();
     });
 
     document.getElementById('inputTitulo').addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
+            currentPage = 1;
             fetchAndRenderArtigos();
         }
     });
 
     document.getElementById('inputAutor').addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
+            currentPage = 1;
             fetchAndRenderArtigos();
         }
     });
@@ -147,14 +150,24 @@
     document.getElementById('prevPageButton').addEventListener('click', function() {
         if(currentPage == 1) return;
 
-        const vazio = fetchAndRenderArtigos();
-
-        if(vazio) currentPage--;
+        currentPage--;
+        fetchAndRenderArtigos();
         
     });
 
     // Evento de clique no botão de próxima página
     document.getElementById('nextPageButton').addEventListener('click', function() {
         currentPage++;
+    
+        fetchAndRenderArtigos()
+            .then(function(hasArticles) {
+                if(!hasArticles) {
+                    currentPage--;
+                }
+            })
+            .catch(function(error) {
+                console.log('Erro:', error);
+                currentPage--;
+            });
     });
 })();
