@@ -17,8 +17,8 @@ class Core{
 
 		$router->addRoute('/criarUsuario', array(new UsersController(), 'criarUsuario'));		
 		$router->addRoute('/editarUsuario', array(new UsersController(), 'editarUsuario'));
-		$router->addRoute('/deletarUsuario', array(new UsersController(), 'deletarUsuario'));
 		$router->addRoute('/getUserData', array(new UsersController(), 'getUserData'));
+		$router->addRoute('/deletarUsuario', array(new UsersController(), 'deletarUsuario'));
 
 		$router->addRoute('/checkauth', array(new AuthController(), 'checkAuth'));
 		$router->addRoute('/login', array(new AuthController(), 'login'));

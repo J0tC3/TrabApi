@@ -140,14 +140,20 @@ class UsersController extends controller{
     }
 
 	public function getUserData() {
+		// Verifica se o método HTTP utilizado é GET
+		if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+			output_header(false, 'Método não permitido');
+			return;
+		}
+	
 		// Verifica se o usuário está autenticado
 		$authData = AuthController::checkAuth(false);
 	
 		if ($authData === false) {
-			output_header(false, 'Token não válido ou usuário não autenticado');
+			output_header(false, 'Token não válido');
 			return;
 		}
-
+	
 		$username = $authData['nome'];
 		$user = new Users();
 		$userData = $user->getUserDataByUsername($username);

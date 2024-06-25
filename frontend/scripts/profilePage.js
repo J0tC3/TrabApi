@@ -256,7 +256,7 @@
 
     function getNameAutor() {
         const token = localStorage.getItem('user_token_jwt');
-
+    
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: "http://localhost/TrabApi/backend/checkauth",
@@ -338,7 +338,7 @@
 
     function getUserData() {
         const token = localStorage.getItem('user_token_jwt');
-
+    
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: 'http://localhost/TrabApi/backend/getUserData',
@@ -353,7 +353,7 @@
                 }
             });
         });
-    }
+    }    
 
     function loadModalPerfil(nome, email, senha) {
         // Criação do modal e seus elementos
