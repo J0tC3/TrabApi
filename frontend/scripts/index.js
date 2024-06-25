@@ -91,13 +91,22 @@
     function fetchArtigoAutor() {
         const titulo = $('#inputTitulo').val();
         const autor = $('#inputAutor').val();
-
+    
         return new Promise(function(resolve, reject) {
             $.ajax({
-                url: 'http://localhost/TrabApi/backend/listarArtigoAutor',
-                method: 'GET',
+                url: 'http://localhost/TrabApi/backend/listarArtigos',
+                method: 'POST',
                 dataType: 'json',
-                data: {'titulo': titulo , 'autor': autor, 'limite' : articlesPerPage, 'page' : currentPage },
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    'titulo': titulo,
+                    'autor': autor,
+                    'limite': articlesPerPage,
+                    'page': currentPage
+                }),
                 success: function(response) {
                     resolve(response);
                 },

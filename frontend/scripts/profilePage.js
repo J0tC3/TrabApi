@@ -6,25 +6,30 @@
     }
 
     function salvarArtigo(id) {
-        const inputTitulo = document.getElementById('inputTitulo');
-        const inputLink = document.getElementById('inputLink');
-        const inputDescricao = document.getElementById('inputDescricao');
-
-        const titulo = inputTitulo.value;
-        const link = inputLink.value;
-        const descricao = inputDescricao.value;
-        
+        const token = localStorage.getItem('user_token_jwt');
+        const inputTitulo = document.getElementById('inputTitulo').value;
+        const inputLink = document.getElementById('inputLink').value;
+        const inputDescricao = document.getElementById('inputDescricao').value;
+    
         $.ajax({
             url: 'http://localhost/TrabApi/backend/editarArtigo',
-            method: 'POST',
+            method: 'PUT', // Usando método PUT para atualização
             dataType: 'json',
-            headers: { 'Authorization': 'Bearer ' + token },
-            data: { 'id': id, 'titulo' : titulo, 'descricao' : descricao, 'link' : link },
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                'id': id,
+                'titulo': inputTitulo,
+                'descricao': inputDescricao,
+                'link': inputLink
+            }),
             success: function(response) {
-                console.log(response);
+                console.log('Artigo atualizado com sucesso:', response);
             },
             error: function(xhr, status, error) {
-                console.error('Erro ao excluir artigo:', status, error);
+                console.error('Erro ao atualizar artigo:', status, error);
             }
         });
     }
@@ -144,13 +149,20 @@
 
     function adicionarArtigo(titulo, descricao, link) {
         const token = localStorage.getItem('user_token_jwt');
-
+    
         $.ajax({
             url: 'http://localhost/TrabApi/backend/criarArtigo',
             method: 'POST',
             dataType: 'json',
-            headers: { 'Authorization': 'Bearer ' + token },
-            data: { 'titulo': titulo, 'descricao' : descricao, 'link' : link },
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                titulo: titulo,
+                descricao: descricao,
+                link: link
+            }),
             success: function(response) {
                 console.log(response);
             },
@@ -158,7 +170,7 @@
                 console.error('Erro ao adicionar artigo:', status, error);
             }
         });
-    }
+    } 
 
     function renderArtigosAutor() {
         const userArtigos = document.getElementById('userArtigos');
@@ -266,12 +278,15 @@
 
     function fetchArtigoAutor() {
         return getNameAutor().then(username => {
+            const requestData = { 'autor': username };
+    
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: 'http://localhost/TrabApi/backend/listarAutor',
-                    method: 'GET',
+                    url: 'http://localhost/TrabApi/backend/listarArtigosDoAutor',
+                    method: 'POST', // Alterado para POST para enviar via php://input
                     dataType: 'json',
-                    data: { 'autor': username },
+                    contentType: 'application/json', // Tipo de conteúdo do request
+                    data: JSON.stringify(requestData), // Dados convertidos para JSON
                     success: function(response) {
                         resolve(response);
                     },
@@ -282,16 +297,18 @@
             });
         });
     }
-
+    
+    
     function deletarArtigo(id) {
         const token = localStorage.getItem('user_token_jwt');
-
+    
         $.ajax({
             url: 'http://localhost/TrabApi/backend/excluirArtigo',
-            method: 'POST',
+            method: 'DELETE',
             dataType: 'json',
+            contentType: 'application/json',
             headers: { 'Authorization': 'Bearer ' + token },
-            data: { 'id': id },
+            data: JSON.stringify({ id: id }), // Enviar dados no formato JSON
             success: function(response) {
                 console.log(response);
             },

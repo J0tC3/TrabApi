@@ -51,61 +51,6 @@ class Artigos extends model{
         $stmt->execute();
     }
 
-    //Listar todos os artigos
-    public function getAll($limit) {
-        $array = array();
-    
-        $sql = "SELECT *
-                  FROM tab_artigo";
-    
-        if ($limit !== null) {
-            $sql .= " LIMIT :limit";
-        }
-    
-        $stmt = $this->db->prepare($sql);
-    
-        if ($limit !== null) {
-            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
-        }
-    
-        $stmt->execute();
-    
-        if ($stmt->rowCount() > 0) {
-            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        }
-    
-        return $array;
-    }
-
-    //Listar Pelo Titulo dos artigos
-    public function getTitulo($titulo, $limit) {
-        $array = array();
-        
-        // Adiciona os caracteres % diretamente na string do título
-        $titulo = '%'.$titulo.'%';
-        
-        $sql = "SELECT *
-                FROM tab_artigo
-                WHERE titulo LIKE :titulo";
-    
-        // Concatena a cláusula LIMIT diretamente na consulta SQL
-        if ($limit !== null) {
-            $sql .= " LIMIT $limit";
-        }
-        
-        $stmt = $this->db->prepare($sql);
-    
-        $stmt->bindValue(':titulo', $titulo);
-    
-        $stmt->execute();
-        
-        if($stmt->rowCount() > 0) {
-            $array = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        }   
-        
-        return $array;
-    }
-
     //Listar Pelo Titulo e Autor dos artigos
     public function getTituloAutor($titulo, $autor, $limit, $offset) {
         $array = array();

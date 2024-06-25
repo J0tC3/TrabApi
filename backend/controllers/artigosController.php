@@ -47,27 +47,30 @@ class artigosController extends controller{
         echo $json_lista;
     }
 
-    public function listarArtigoAutor() {
-        if (!(isset($_GET['titulo']) && !empty($_GET['titulo'])) 
-        && !(isset($_GET['autor']) && !empty($_GET['autor']))) {
-            output_header(false, 'Parametro "titulo" ou "autor" e obrigatorio');
+    public function listarArtigos() {
+        // Verificar se os parâmetros necessários foram enviados no corpo da requisição POST
+        $input = json_decode(file_get_contents('php://input'), true);
+    
+        if (!(isset($input['titulo']) && !empty($input['titulo'])) 
+            && !(isset($input['autor']) && !empty($input['autor']))) {
+            output_header(false, 'Parâmetro "titulo" ou "autor" é obrigatório');
             return;
         }
-
+    
         // Define a página padrão como 1 se não especificada
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $page = isset($input['page']) ? $input['page'] : 1;
     
         $limite = 5;
         
-        if(isset($_GET['limite']) && !empty($_GET['limite'])) {
-            $limite = $_GET['limite'];
+        if(isset($input['limite']) && !empty($input['limite'])) {
+            $limite = $input['limite'];
         }
     
         // Calcula o offset para a consulta com base na página atual
         $offset = ($page - 1) * $limite;
     
-        $titulo = isset($_GET['titulo']) ? $_GET['titulo'] : '';
-        $autor = isset($_GET['autor']) ? $_GET['autor'] : '';
+        $titulo = isset($input['titulo']) ? $input['titulo'] : '';
+        $autor = isset($input['autor']) ? $input['autor'] : '';
     
         $artigo = new Artigos();
         $lista = $artigo->getTituloAutor($titulo, $autor, $limite, $offset);
@@ -75,115 +78,163 @@ class artigosController extends controller{
         // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
     
-        // Saída do JSON data
+        // Saída do JSON
         echo $json_lista;
-    }
+    }    
     
     // Listar artigos por autor
-    public function listarAutor() {
-        if(!(isset($_GET['autor']) && !empty($_GET['autor']))) return;
-
-        $autor = $_GET['autor'];
-
+    public function listarArtigosDoAutor() {
+        // Captura o corpo da requisição
+        $inputJSON = file_get_contents('php://input');
+        
+        // Verifica se há dados no corpo da requisição
+        if (!$inputJSON) {
+            output_header(false, 'Dados de entrada não encontrados');
+            return;
+        }
+    
+        // Decodifica os dados JSON para um array associativo
+        $input = json_decode($inputJSON, true);
+    
+        // Verifica se o campo 'autor' foi enviado
+        if (!isset($input['autor']) || empty($input['autor'])) {
+            output_header(false, 'Parâmetro "autor" é obrigatório');
+            return;
+        }
+    
+        $autor = $input['autor'];
+    
         $artigo = new Artigos();
         $lista = $artigo->getAutor($autor);
-
+    
         // Converte o array $lista para JSON 
         $json_lista = json_encode($lista);
-
-        // Saida do JSON data
+    
+        // Saída do JSON
         echo $json_lista;
     }
 
     //Criar Artigo
-    public function criarArtigo(){
+    public function criarArtigo() {
+        // Verificar autenticação do usuário
         if(AuthController::checkAuth(false) == false) {
             output_header(false, 'Usuário não autenticado');
             return;
         }  
-
-        $autor = AuthController::checkAuth(false);
-
-        $autor = $autor['nome'];
-
+    
+        // Recuperar nome do autor
+        $autor = AuthController::checkAuth(false)['nome'];
+    
+        // Obter dados do usuário
         $users = new Users();
         $userData = $users->getUserDataByUsername($autor);
-
-        $email = $userData['email'];
-
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo'])) 
-        || !(isset($_POST['descricao']) && !empty($_POST['descricao']))
-        || !(isset($_POST['link']) && !empty($_POST['link']))) {
-            output_header(false, 'Dados insuficientes');
+    
+        // Verificar se o e-mail do usuário foi recuperado
+        if (!$userData || !isset($userData['email'])) {
+            output_header(false, 'Erro ao recuperar dados do usuário');
             return;
         }
-
-        $titulo = $_POST['titulo'];
-        $descricao = $_POST['descricao'];
-        $link = $_POST['link'];
-
-        $artigo = new Artigos();
         
+        $email = $userData['email'];
+    
+        // Obter dados enviados como JSON
+        $json_data = file_get_contents('php://input');
+        $data = json_decode($json_data, true); // Decodificar JSON para array associativo
+        
+        // Verificar se os dados foram recebidos corretamente
+        if (!$data || !isset($data['titulo']) || !isset($data['descricao']) || !isset($data['link'])) {
+            output_header(false, 'Dados insuficientes ou inválidos');
+            return;
+        }
+    
+        // Sanitize inputs (se necessário)
+        $titulo = htmlspecialchars($data['titulo'], ENT_QUOTES, 'UTF-8');
+        $descricao = htmlspecialchars($data['descricao'], ENT_QUOTES, 'UTF-8');
+        $link = filter_var($data['link'], FILTER_SANITIZE_URL);
+    
+        // Validar link
+        if (!filter_var($link, FILTER_VALIDATE_URL)) {
+            output_header(false, 'Link inválido');
+            return;
+        }
+    
+        // Criar artigo
+        $artigo = new Artigos();
         $artigo->createArtigo($titulo, $descricao, $link, $autor, $email);
         output_header(true, 'Artigo Criado');
     }
 
     //Excluir artigo
     public function excluirArtigo() {
-        // Retorna um array com o nome do usuário caso ele exista
+        // Verificar autenticação do usuário
         $username = AuthController::checkAuth(false);
         
         if ($username == false) {
             output_header(false, 'Usuário não autenticado');
             return;
-        }else if(!(isset($_POST['id']) && !empty($_POST['id']))) {
+        }
+        
+        // Obter dados da solicitação DELETE
+        $input = json_decode(file_get_contents('php://input'), true);
+    
+        // Verificar se o ID do artigo foi fornecido
+        if (!isset($input['id']) || empty($input['id'])) {
             output_header(false, 'Id do artigo vazio/não provido');
             return;
         }
     
+        // Sanitizar o ID do artigo
+        $id = filter_var($input['id'], FILTER_SANITIZE_NUMBER_INT);
+        
+        // Recuperar nome do usuário
         $username = $username['nome'];
-        $id = $_POST['id'];
-    
+        
         $artigo = new Artigos();
         
-        // Verifica se o artigo existe
+        // Verificar se o artigo existe
         if (!$artigo->artigoExiste($id, $username)) {
             output_header(false, 'Artigo não encontrado');
             return;
         }
-    
-        // Exclui o artigo
+        
+        // Excluir o artigo
         $artigo->excluirArtigo($id, $username);
-    
+        
         output_header(true, 'Artigo excluído');
     }
-
+    
     //Editar Artigo
     public function editarArtigo() {
-        // Retorna um array com o nome do usuário caso ele exista
+        // Verificar autenticação do usuário
         $username = AuthController::checkAuth(false);
         
         if ($username == false) {
             output_header(false, 'Usuário não autenticado');
             return;
-        }else if(!(isset($_POST['id']) && !empty($_POST['id']))) {
+        }
+    
+        // Verificar dados JSON
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+    
+        if (!(isset($input['id']) && !empty($input['id']))) {
             output_header(false, 'Id do artigo vazio/não provido');
             return;
         }
     
-        if(!(isset($_POST['titulo']) && !empty($_POST['titulo']))
-        || !(isset($_POST['descricao']) && !empty($_POST['descricao']))
-        || !(isset($_POST['link']) && !empty($_POST['link']))) {
+        if (!(isset($input['titulo']) && !empty($input['titulo'])) 
+            || !(isset($input['descricao']) && !empty($input['descricao']))
+            || !(isset($input['link']) && !empty($input['link']))) {
             output_header(false, 'Dados do artigo incompletos');
             return;
         }
-
+    
         $username = $username['nome'];
-        $id = $_POST['id'];
-        $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
-        $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : null;
-        $link = isset($_POST['link']) ? $_POST['link'] : null;
-
+        $id = $input['id'];
+        $titulo = isset($input['titulo']) ? htmlspecialchars($input['titulo'], ENT_QUOTES, 'UTF-8') : null;
+        $descricao = isset($input['descricao']) ? htmlspecialchars($input['descricao'], ENT_QUOTES, 'UTF-8') : null;
+        $link = isset($input['link']) ? filter_var($input['link'], FILTER_SANITIZE_URL) : null;
+    
         $artigo = new Artigos();
         
         // Verifica se o artigo existe
@@ -200,5 +251,4 @@ class artigosController extends controller{
             output_header(false, 'Erro ao atualizar artigo: ' . $e->getMessage());
         }
     }
-
 }
