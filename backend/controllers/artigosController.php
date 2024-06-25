@@ -20,11 +20,21 @@ class artigosController extends controller{
     
         // Define a página padrão como 1 se não especificada
         $page = isset($input['page']) ? $input['page'] : 1;
+
+        if($page < 0) {
+            output_header(false, "O page deve ser maior que 0");
+            return;
+        }
     
         $limite = 5;
         
         if(isset($input['limite']) && !empty($input['limite'])) {
             $limite = $input['limite'];
+        }
+
+        if($limite < 0) {
+            output_header(false, "Limite deve ser maior que 0");
+            return;
         }
     
         // Calcula o offset para a consulta com base na página atual
