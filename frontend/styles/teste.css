@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+h1, h2, p, span {
+    margin: 0;
+}
+
+#navBar {
+    background-color: var(--backgroundColor);
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    position: fixed;
+}   
+
+.inputsBox {
+    display: flex;
+    gap: 15px;
+    flex: 1;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 7px;
+    font-size: 24px;
+    border: 3px solid transparent;
+    transition: ease-in-out 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border: 3px solid var(--borderColor);
+}
+
+button, a {
+    border-radius: 7px;
+    background-color: var(--buttonColor);
+    border: none;
+    color: black;  
+    height: 100%;  
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+#btnPesquisar {
+    padding: 0 20px;
+}
+
+#artigosBody {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 18px 55px;
+    padding-top: 110px;
+    gap: 25px;
+}
+
+.artigoItem {
+    display: flex;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    gap: 10px;
+}
+
+.artigoDetalhes {
+    word-break: break-word;
+    flex: 1;
+}
+
+.btnBaixar {
+    font-size: 28px;
+    padding: 22px 25px;
+    border-radius: 7px;
+}
+
+footer {
+    padding: 10px 0;
+    background-color: #f0f0f0;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    
+}
+
+.pagination-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 200px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+@media (max-width: 900px) {
+    #navBar, .inputsBox {
+        flex-direction: column;
+    }
+
+    #btnPesquisar {
+        padding: 0 20px;
+        height: 50px;
+    }
+
+    #btnLogin, #btnPerfil {
+        font-size: 20px;
+        height: 50px;
+        padding: 10px 20px;
+    }
+
+    #artigosBody {
+        padding-top: 240px;
+    }
+
+    .artigoItem {
+        align-items: start;
+        padding: 20px;
+        gap: 7px;
+        flex-direction: column;
+    }
+
+    .btnBaixar {
+        height: min-content;
+        font-size: 20px;
+        padding: 5px;
+        text-align: center;
+        width: 100%;
+    }
+}

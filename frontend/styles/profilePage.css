@@ -1,0 +1,184 @@
+#contentBody {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f4f9;
+    padding: 20px;
+    max-height: 100%;
+}
+
+.btnsBox {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#userPFP {
+    width: 50px;
+}
+
+button {
+    font-size: 14px;
+    padding: 5px 15px;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+span {
+    font-size: 14px;
+}
+
+.profileCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 25px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    margin-bottom: 15px;
+}
+
+#btnVoltar {
+    align-self: start;
+}
+
+#btnVoltar {
+    font-size: 13.3px;
+    border-radius: 1000px;
+    background-color: var(--buttonColor);
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+}
+
+#btnVoltar::before {
+    transform: scaleX(-1);
+    background-image: url('../assets/arrow.png');
+    background-size: 20px 20px;
+    display: inline-block;
+    width: 20px; 
+    height: 20px;
+    content:"";
+}
+
+#userArtigos {
+    border: 2px solid black;
+    border-radius: 20px;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 18px 55px;
+    gap: 14px;
+    overflow: auto;
+}
+
+.artigoItem {
+    background-color: white;
+    display: flex;
+    border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px;
+    gap: 10px;
+}
+
+.artigoDetalhes {
+    word-break: break-word;
+    flex: 1;
+}
+
+#artigoItem a {
+    font-size: 28px;
+    padding: 22px 25px;
+    border-radius: 7px;
+}
+
+.btnEditar, .btnBaixar, .btnExcluir {
+    padding: 15px;
+}
+
+#modalBackground {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #808080a1;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+}
+
+#modalEditarAdicionarArtigo, #modalEditarPerfil {
+    background-color: white;
+    height: 540px;
+    width: 500px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 35px;
+    gap: 20px;
+    box-shadow: rgb(0 0 0 / 8%) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.inputBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputBox label {
+    font-size: 25px;
+}
+
+.inputBox input, #inputDescricao {
+    flex: 1;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 24px;
+    border: 3px solid transparent;
+    transition: ease-in-out 0.2s;
+    border: 3px solid var(--buttonColor);
+}
+
+.inputBox input {
+    border-radius: 600px;
+}
+
+.inputBox input:focus, #inputDescricao:focus {
+    outline: none;
+    border: 3px solid var(--borderColor);
+}
+
+#modalEditarAdicionarArtigo div:nth-child(3) {
+    flex: 1;
+}
+
+#inputDescricao {
+    resize: none;
+    font-size: 16px;
+}
+
+#btnBox {
+    display: flex;
+    gap: 15px;
+}
+
+#btnCancelar, #btnSalvar {
+    flex: 1;
+    font-size: 20px;
+    padding: 20px;
+    border-radius: 50px;
+}
+
+#btnCancelar {
+    background-color: white;
+    border: 2px solid var(--buttonColor);
+}
