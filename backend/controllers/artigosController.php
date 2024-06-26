@@ -18,25 +18,17 @@ class artigosController extends controller{
             return;
         }
     
+        if(!(isset($input['limite']) && !empty($input['limite']))
+        || !(isset($input['page']) && !empty($input['page']))) {
+            output_header(false, 'Parametro "Page" e "limite" obrigatorio');
+            return;
+        }
         // Define a página padrão como 1 se não especificada
         $page = isset($input['page']) ? $input['page'] : 1;
 
-        if($page < 0) {
-            output_header(false, "O page deve ser maior que 0");
-            return;
-        }
-    
-        $limite = 5;
-        
-        if(isset($input['limite']) && !empty($input['limite'])) {
-            $limite = $input['limite'];
-        }
+        // Define a limite padrão como 1 se não especificada
+        $limite = isset($input['limite']) ? $input['limite'] : 1;
 
-        if($limite < 0) {
-            output_header(false, "Limite deve ser maior que 0");
-            return;
-        }
-    
         // Calcula o offset para a consulta com base na página atual
         $offset = ($page - 1) * $limite;
     
@@ -51,7 +43,7 @@ class artigosController extends controller{
     
         // Saída do JSON
         echo $json_lista;
-    }    
+    }      
     
     // Listar artigos por autor
     public function listarArtigosDoAutor() {

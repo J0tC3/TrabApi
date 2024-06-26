@@ -259,7 +259,7 @@
     
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: "http://localhost/TrabApi/backend/checkauth",
+                url: "http://localhost/TrabApi/backend/checkAuth",
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
@@ -279,14 +279,15 @@
     function fetchArtigoAutor() {
         return getNameAutor().then(username => {
             const requestData = { 'autor': username };
+            console.log(requestData)
     
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: 'http://localhost/TrabApi/backend/listarArtigosDoAutor',
-                    method: 'POST', // Alterado para POST para enviar via php://input
+                    url: 'http://localhost/trabAPI/backend/listarArtigosDoAutor',
+                    method: 'POST',
                     dataType: 'json',
-                    contentType: 'application/json', // Tipo de conteúdo do request
-                    data: JSON.stringify(requestData), // Dados convertidos para JSON
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData), // Envia os dados como JSON no corpo da requisição
                     success: function(response) {
                         resolve(response);
                     },

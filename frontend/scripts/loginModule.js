@@ -22,15 +22,22 @@
             data: JSON.stringify({'username': username, 'passcode': passcode}),
         })
         .done(function(data) {
-            if (data !== '') {
+            if(isJsonString(data)) {
+                console.error('Erro: ' + JSON.parse(data).titulo);
+            }else if (data !== '') {
                 localStorage.setItem('user_token_jwt', data);
+                window.open('./home', '_self');
             }
-            window.open('./home', '_self');
         })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Erro ao realizar login:', textStatus, errorThrown);
-            alert('Erro ao realizar login. Verifique suas credenciais e tente novamente.');
-        });
+    }
+
+    function isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
     
     const btnVoltar = document.getElementById('btnVoltar');
