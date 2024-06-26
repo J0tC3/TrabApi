@@ -139,5 +139,4 @@ class Artigos extends model{
         // Retorna true se o artigo existe, false caso contrário
         return $stmt->fetchColumn() > 0;
     }
-
 }

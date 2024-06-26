@@ -121,29 +121,37 @@ class UsersController extends controller{
 		output_header(true, 'Dados do usuário atualizado com sucesso');
 	}
 
-    public function deletarUsuario() {
-		$authData = AuthController::checkAuth(false);
-
+	public function deletarUsuario() {
 		// Verifica se o usuário está autenticado
-		if ($authData == false) {
-			output_header(false, 'Token não válido ou usuário não autenticado');
+		$authData = AuthController::checkAuth(false);
+	
+		if (!$authData) {
+			output_header(false, 'Token inválido ou usuário não autenticado');
 			return;
 		}
-
-		$user = new Users();
-
-		$userData = $user->getUserDataByUsername($authData['nome']);
 	
-		$id = $userData['id_user'];
-
-        $dropartigos = new Artigos;
-
-        $dropartigos->dropTodosArtigos($id);
-        $user->dropUsuario($id);
-
-		
-		output_header(True, 'Usuário Excluido com Sucesso');
-    }
+		$username = $authData['nome'];
+	
+		// Obtém o ID do usuário
+		$user = new Users();
+		$userData = $user->getUserDataByUsername($username);
+	
+		if (!$userData) {
+			output_header(false, 'Erro ao recuperar dados do usuário');
+			return;
+		}
+	
+		$userId = $userData['id_user'];
+	
+		// Deleta todos os artigos do usuário
+		$artigos = new Artigos();
+		$artigos->dropTodosArtigos($username);
+	
+		// Deleta o usuário
+		$user->dropUsuario($userId);
+	
+		output_header(true, 'Usuário excluído com sucesso');
+	}
 
 	public function getUserData() {
 		// Verifica se o método HTTP utilizado é GET

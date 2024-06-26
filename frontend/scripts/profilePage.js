@@ -437,6 +437,37 @@
         document.body.insertBefore(modalBackground, document.body.firstChild);
     }
 
+    function deletarConta() {
+        const token = localStorage.getItem('user_token_jwt');
+        
+        $.ajax({
+            url: 'http://localhost/trabAPI/backend/deletarUsuario',
+            method: 'POST', 
+            dataType: 'json',
+            contentType: 'application/json',
+            headers: { 'Authorization': 'Bearer ' + token },
+            success: function(response) {
+                console.log(response);
+                alert('Usuário excluído com sucesso!');
+
+                localStorage.removeItem('user_token_jwt');
+                window.open('home', '_self');
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao excluir usuário:', status, error);
+                alert('Erro ao excluir usuário. Verifique o console para mais detalhes.');
+            }
+        });
+    }
+
+    const btnDeletarConta = document.getElementById('btnDeletarConta');
+
+    btnDeletarConta.addEventListener('click', () => {
+        if (confirm('Tem certeza que deseja excluir sua conta?')) {
+            deletarConta();
+        }
+    });
+
     const btnLogout = document.getElementById('btnLogout');
 
     btnLogout.addEventListener('click', () => {
