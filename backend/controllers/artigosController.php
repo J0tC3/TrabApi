@@ -103,6 +103,13 @@ class artigosController extends controller{
         // Obter dados enviados como JSON
         $json_data = file_get_contents('php://input');
         $data = json_decode($json_data, true); // Decodificar JSON para array associativo
+
+        if (!(isset($data['titulo']) && !empty($data['titulo'])) 
+        || !(isset($data['descricao']) && !empty($data['descricao']))
+        || !(isset($data['link']) && !empty($data['link']))) {
+            output_header(false, 'Dados do artigo incompletos');
+            return;
+        }
         
         // Verificar se os dados foram recebidos corretamente
         if (!$data || !isset($data['titulo']) || !isset($data['descricao']) || !isset($data['link'])) {
