@@ -26,6 +26,11 @@
                 'link': inputLink
             }),
             success: function(response) {
+                if(response.status){
+                    alert("Artigo atualizado com sucesso")
+                }else{
+                    alert("Erro ao atualizar artigo verifique os campos");
+                }
                 console.log('Artigo atualizado com sucesso:', response);
             },
             error: function(xhr, status, error) {
@@ -71,7 +76,7 @@
         const linkInput = document.createElement('input');
         linkInput.type = 'text';
         linkInput.id = 'inputLink';
-        linkInput.placeholder = 'Ex: www.artigo.com/download';
+        linkInput.placeholder = 'Ex: http://www.exemplo.com/download';
 
         linkBox.appendChild(linkLabel);
         linkBox.appendChild(linkInput);
@@ -164,7 +169,11 @@
                 link: link
             }),
             success: function(response) {
-                console.log(response);
+                if(response.status){
+                    alert("Artigo criado")
+                }else{
+                    alert("Erro ao criar artigo verifique os campos");
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Erro ao adicionar artigo:', status, error);
@@ -183,6 +192,7 @@
             });
         })
         .catch(function(error) {
+            alert('Erro ao buscar artigo:');
             console.error('Erro ao buscar artigos:', error);
         });
     }
@@ -279,7 +289,6 @@
     function fetchArtigoAutor() {
         return getNameAutor().then(username => {
             const requestData = { 'autor': username };
-            console.log(requestData)
     
             return new Promise((resolve, reject) => {
                 $.ajax({
@@ -310,6 +319,11 @@
             headers: { 'Authorization': 'Bearer ' + token },
             data: JSON.stringify({ id: id }), // Enviar dados no formato JSON
             success: function(response) {
+                if(response.status){
+                    alert("Artigo excluido com sucesso")
+                }else{
+                    alert("Erro ao excluir");
+                }
                 console.log(response);
             },
             error: function(xhr, status, error) {
@@ -320,7 +334,7 @@
 
     function editarUsuario(username, passcode, email) {
         const token = localStorage.getItem('user_token_jwt');
-    
+
         $.ajax({
             url: 'http://localhost/TrabApi/backend/editarUsuario',
             method: 'PUT',
@@ -329,7 +343,13 @@
             data: JSON.stringify({ 'username': username, 'passcode': passcode, 'email': email }),
             contentType: 'application/json',
             success: function(response) {
-                console.log('Usuário atualizado com sucesso:', response);
+                if(response.status){
+                    alert("Usuário atualizado com sucesso")
+                    localStorage.removeItem('user_token_jwt');
+                    window.open('./login', '_self');
+                }else{
+                    alert("Erro ao atualizar usuário verifique os campos");
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Erro ao atualizar usuário:', status, error);
@@ -420,8 +440,6 @@
             const passcode = inputPassword.value;
 
             editarUsuario(username, passcode, email);
-            localStorage.removeItem('user_token_jwt');
-            window.open('./login', '_self');
         });
 
         btnCancelar.addEventListener('click', () => {
