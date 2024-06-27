@@ -103,11 +103,13 @@ class UsersController extends controller{
 	
 		$artigos = new Artigos();
 		$user = new Users();
-		$userController = new UsersController();
+		$lista = $user->getAll();
 
-		if($userController->userExists($username, $passcode)) {
-			output_header(false, 'Usuario ja existe!');
-			return;
+		foreach ($lista as $usuario) {
+			if($username == $usuario['username'] || $email == $usuario['email']) {
+				output_header(false, 'Usuário já existe!');
+				return;
+			}
 		}
 	
 		// Obtém o ID do usuário a partir dos dados autenticados
