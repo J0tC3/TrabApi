@@ -23,6 +23,7 @@
         })
         .done(function(data) {
             if(isJsonString(data)) {
+                alert("ERRO: " + JSON.parse(data).titulo)
                 console.error('Erro: ' + JSON.parse(data).titulo);
             }else if (data !== '') {
                 localStorage.setItem('user_token_jwt', data);

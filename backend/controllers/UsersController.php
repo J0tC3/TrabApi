@@ -48,15 +48,20 @@ class UsersController extends controller{
 		$email = $input['email'];
 	
 		$users = new UsersController();
-	
-		if ($users->userExists($username, $passcode)) {
-			output_header(false, 'Usuário já cadastrado');
-			return;
-		}
 		
 		// Cria um novo usuário
-		$create = new Users();
-		$create->criarUsuario($username, $passcode, $email);
+		$user = new Users();
+
+		$lista = $user->getAll();
+
+		foreach ($lista as $usuario) {
+			if($username == $usuario['username'] || $email == $usuario['email']) {
+				output_header(false, 'Usuário já cadastrado');
+				return;
+			}
+		}
+
+		$user->criarUsuario($username, $passcode, $email);
 	
 		output_header(true, 'Usuário criado com sucesso');
 	}

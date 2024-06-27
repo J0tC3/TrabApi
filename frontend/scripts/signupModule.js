@@ -27,8 +27,15 @@
             data: JSON.stringify(requestData), // Dados convertidos para JSON
             dataType: 'json',
             success: function(data) {
-                alert("Conta criada com sucesso!");
-                window.open('./login', '_self'); // Redireciona para a página de login
+                
+                if(data.status) {
+                    alert("Conta criada com sucesso!");
+                    window.open('./login', '_self'); // Redireciona para a página de login
+                }else {
+                    alert(data.titulo);
+                }
+                
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Erro ao criar conta:', textStatus, errorThrown);
