@@ -56,7 +56,7 @@ class UsersController extends controller{
 
 		foreach ($lista as $usuario) {
 			if($username == $usuario['username'] || $email == $usuario['email']) {
-				output_header(false, 'Usuário já cadastrado');
+				output_header(false, 'Email ou nome de usuario já cadastrado, tente novamente');
 				return;
 			}
 		}
@@ -107,7 +107,7 @@ class UsersController extends controller{
 
 		foreach ($lista as $usuario) {
 			if($username == $usuario['username'] || $email == $usuario['email']) {
-				output_header(false, 'Usuário já existe!');
+				output_header(false, 'Erro: Email ou nome de usuário ja cadastrado');
 				return;
 			}
 		}

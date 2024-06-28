@@ -348,7 +348,7 @@
                     localStorage.removeItem('user_token_jwt');
                     window.open('./login', '_self');
                 }else{
-                    alert("Erro ao atualizar usuário verifique os campos");
+                    alert(response.titulo);
                 }
             },
             error: function(xhr, status, error) {
